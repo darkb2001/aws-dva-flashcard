@@ -1737,7 +1737,10 @@ function shortAnswersPool(secId) {
   allCards().forEach(x => {
     if (secId && x.sid !== secId) return;
     const a = quizAnswerOf(x.card);
-    if (a.length >= 12 && !seen.has(a)) { seen.add(a); pool.push({ sid: x.sid, text: a }); }
+    if (a.length >= 12 && !seen.has(a)) {
+      seen.add(a);
+      pool.push({ sid: x.sid, text: a, chapter: x.card.chapter || "" });
+    }
   });
   return pool;
 }
@@ -1772,6 +1775,29 @@ function quizAnswerOf(card) {
   if (out.length <= 150) return out;
   return out.slice(0, 147).replace(/[\s,;:.]+$/, "") + "…";
 }
+/* Distractors decide whether a quiz question teaches anything. Picking three random
+   answers from the same section produced options that were obviously wrong by length
+   or by topic, so a candidate could pass without knowing the material. Options are now
+   ranked: same chapter first, then same length band, then same section. */
+const QUIZ_STOP = new Set(["the","and","for","with","that","this","are","was","you","your",
+  "can","will","not","all","any","use","used","using","from","into","when","then","than",
+  "which","what","how","its","it's","has","have","had","但","và","là","có","cho","khi","thì"]);
+
+function quizTokens(text) {
+  return new Set(String(text || "").toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 2 && !QUIZ_STOP.has(w)));
+}
+
+function tokenOverlap(a, b) {
+  const ta = quizTokens(a), tb = quizTokens(b);
+  if (!ta.size || !tb.size) return 0;
+  let shared = 0;
+  ta.forEach((w) => { if (tb.has(w)) shared++; });
+  return shared / Math.min(ta.size, tb.size);
+}
+
 function newQuiz() {
   const pool = allCards().filter(x => inSection(x) && matchesQuery(x));
   if (!pool.length) { ui.quiz = null; $("quizQ").textContent = "Không có thẻ trong bộ lọc hiện tại."; $("quizOpts").innerHTML = ""; return; }
@@ -1779,22 +1805,36 @@ function newQuiz() {
   const answer = quizAnswerOf(pick.card);
   const answerKey = firstLine(pick.card.a);
 
-  const sameSec = shortAnswersPool(pick.sid);
   const seen = new Set([answer, answerKey]);
-  const distract = [];
-  for (const t of shuffle(sameSec)) {
-    if (distract.length >= 3) break;
-    if (seen.has(t.text)) continue;
-    seen.add(t.text); distract.push(t.text);
-  }
-  if (distract.length < 3) {
-    const global = shuffle(shortAnswersPool(null));
-    for (const t of global) {
-      if (distract.length >= 3) break;
-      if (seen.has(t.text)) continue;
-      seen.add(t.text); distract.push(t.text);
-    }
-  }
+  const candidates = [];
+  const collect = (secId) => {
+    shortAnswersPool(secId).forEach((t) => {
+      if (seen.has(t.text)) return;
+      seen.add(t.text);
+      const option = t.sid ? t : { ...t, sid: null };
+      let score = 0;
+      // a distractor from the same chapter reads like a real alternative
+      if (option.chapter && pick.card.chapter && option.chapter === pick.card.chapter) score += 3;
+      // and so does one with a comparable length
+      const delta = Math.abs(option.text.length - answer.length);
+      if (delta < 20) score += 3;
+      else if (delta < 45) score += 2;
+      else if (delta < 80) score += 1;
+      // sharing terminology makes it plausible rather than random
+      const shared = tokenOverlap(answer, option.text);
+      if (shared > 0.6) return;   // says the same thing as the answer — unusable as a distractor
+      score += shared * 4;
+      if (option.sid === pick.sid) score += 1.5;
+      candidates.push({ text: option.text, score: score + Math.random() * 0.9 });
+    });
+  };
+  collect(pick.sid);
+  if (candidates.length < 3) collect(null);
+
+  candidates.sort((a, b) => b.score - a.score);
+  const distract = candidates.slice(0, 3).map((c) => c.text);
+  while (distract.length < 3) distract.push("Không có phương án khác phù hợp");
+
   const options = shuffle([answer, ...distract.slice(0, 3)]);
   ui.quiz = { ...pick, options, answer, answerKey, answered: false };
 }

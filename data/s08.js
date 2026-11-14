@@ -53,6 +53,15 @@ window.DVA_SECTIONS.push({
     { chapter: "Advanced", q: "Ví dụ use case Custom Resource?",
       a: "**Không xoá được S3 bucket không rỗng** → dùng custom resource chạy Lambda **empty bucket** trước khi CloudFormation xoá nó." },
     { chapter: "Advanced", q: "StackSets là gì?",
-      a: "Create/update/delete stack **trên nhiều account & region** bằng **một operation/template**.\nUpdate StackSet → update **tất cả** stack instances.\nÁp được cho **toàn bộ AWS Organization**.\nChỉ **Administrator account** (hoặc Delegated Admin) tạo được StackSets." }
+      a: "Create/update/delete stack **trên nhiều account & region** bằng **một operation/template**.\nUpdate StackSet → update **tất cả** stack instances.\nÁp được cho **toàn bộ AWS Organization**.\nChỉ **Administrator account** (hoặc Delegated Admin) tạo được StackSets." },
+    { chapter: "Advanced", q: "CloudFormation drift là gì?",
+      a: "**Drift** = trạng thái **thực tế của resource khác với template** (ai đó sửa tay trên console/CLI sau khi stack tạo xong).\n- **Detect drift**: chạy `detect-stack-drift` → báo **DRIFTED / IN_SYNC / NOT_CHECKED** cho từng resource\n- **Resource drift status**: chỉ ra chính xác resource nào bị lệch\n⚠️ Drift **không tự sửa** được — phải **update stack** (ghi đè) hoặc **import/ sửa tay**. Bật **CloudTrail** để biết ai đã đổi.\nStackSets có **drift detection** riêng cho toàn bộ stack instances." },
+    { chapter: "Advanced", q: "Nested stack vs cross-stack reference?",
+      a: "**Nested stack**: stack **cha** gọi stack **con** qua `AWS::CloudFormation::Stack` với `TemplateURL` (**phải là S3 URL**). Dùng để **tách template lớn** thành module, tái sử dụng, mỗi stack con có **lifecycle riêng**.\n**Cross-stack reference**: stack A **Export** (`Outputs` + `Export.Name`) → stack B **`Fn::ImportValue`**. Dùng khi 2 stack **độc lập**, không lồng nhau.\n⚠️ **Không xoá được** stack đang có output bị stack khác **import** — phải xoá reference trước." },
+    { chapter: "Advanced", q: "Change sets & stack update an toàn?",
+      a: "**Change set**: xem trước **resource nào sẽ thay đổi** (Add/Modify/Remove) trước khi apply → tránh update phá vỡ production.\n**Update behaviors**: **Update requiring no interruption**, **Some interruption**, **Replacement** (tạo mới rồi xoá cũ — **mất data** với resource stateful như RDS/EBS nếu không có snapshot).\n**Rollback**: update fail → CloudFormation **rollback về trạng thái trước** (trừ khi **disable rollback**). Bật **termination protection** cho stack quan trọng." },
+    { chapter: "Advanced", q: "CloudFormation: DeletionPolicy & UpdateReplacePolicy?",
+      a: "**DeletionPolicy** (khi **xoá stack**): `Delete` (mặc định), `Retain` (giữ resource), `Snapshot` (chỉ với resource hỗ trợ: RDS, EBS volume, Redshift, Neptune...).\n**UpdateReplacePolicy** (khi resource bị **replace** do update): cùng 3 giá trị, quyết định số phận resource **cũ**.\n⚠️ Thiếu `Retain`/`Snapshot` → **mất dữ liệu** khi xoá stack. Đây là câu hỏi thi phổ biến." },
+
   ]
 });

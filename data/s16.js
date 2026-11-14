@@ -2,7 +2,7 @@ window.DVA_SECTIONS = window.DVA_SECTIONS || [];
 window.DVA_SECTIONS.push({
   id: "s16", num: 16,
   title: "Advanced Identity, Security & Encryption, Other Services",
-  chapters: ["STS & IAM Advanced", "KMS & Encryption", "Secrets", "Other Services"],
+  chapters: ["STS & IAM Advanced", "KMS & Encryption", "Secrets", "AppConfig & Systems Manager", "Other Services"],
   cards: [
     { chapter: "STS", q: "AWS STS là gì?",
       a: "**Security Token Service** — cấp quyền truy cập **giới hạn & tạm thời** (tối đa **1 giờ**).\nAPIs: **AssumeRole** (trong/cross account), **AssumeRoleWithSAML**, **AssumeRoleWithWebIdentity**, **GetSessionToken** (MFA), **GetFederationToken**, **GetCallerIdentity**, **DecodeAuthorizationMessage**." },
@@ -61,6 +61,27 @@ window.DVA_SECTIONS.push({
     { chapter: "Others", q: "AWS Certificate Manager (ACM)?",
       a: "Provision, manage, deploy **SSL/TLS certificates** — dùng cho **in-flight encryption (HTTPS)**.\n- Public & private TLS certificates\n- **Public TLS miễn phí**\n- **Auto renewal**\n- Tích hợp: **ELB, CloudFront, API Gateway**" },
     { chapter: "Others", q: "AWS Macie là gì?",
-      a: "Fully managed **data security & privacy** service, dùng **ML + pattern matching** để tìm & bảo vệ sensitive data trong AWS. Phát hiện và cảnh báo **PII**." }
+      a: "Fully managed **data security & privacy** service, dùng **ML + pattern matching** để tìm & bảo vệ sensitive data trong AWS. Phát hiện và cảnh báo **PII**." },
+    { chapter: "STS", q: "IAM policy inheritance hoạt động thế nào?",
+      a: "Policy **không kế thừa** giữa các cấp theo kiểu cộng dồn — chúng **hợp lại** theo phạm vi:\n- **Identity-based policy** (user/role/group) → cấp quyền\n- **Resource-based policy** (bucket, queue, KMS key) → cấp quyền **trực tiếp** cho principal\n- **Permissions boundary** → **giới hạn trần** quyền tối đa của user/role\n- **SCP** (Organizations) → giới hạn trần cho **cả account**\n**Kết quả cuối = (identity ∪ resource) ∩ boundary ∩ SCP**. **Explicit Deny** ở bất kỳ đâu → **thắng tất cả**." },
+    { chapter: "STS", q: "IAM policy: explicit deny vs implicit deny?",
+      a: "**Explicit Deny**: `\"Effect\": \"Deny\"` — **luôn thắng**, kể cả khi có Allow ở policy khác. Dùng cho **guardrail** (chặn xoá CloudTrail, chặn dùng region ngoài phép).\n**Implicit Deny**: mặc định — không có Allow nào → **bị từ chối**. Không cần viết Deny.\n⚠️ Câu hỏi thi hay hỏi: có Allow trong identity policy **và** Deny trong SCP → kết quả **Deny**." },
+    { chapter: "STS", q: "STS AssumeRole dùng khi nào?",
+      a: "**AssumeRole** trả về **temporary credentials** (AccessKey + SecretKey + **SessionToken**) cho một **IAM role**.\nDùng khi:\n- **Cross-account access**: role ở account B có **trust policy** cho phép account A\n- **Same-account role switching** (least privilege theo task)\n- **MFA-protected** API (`GetSessionToken` + MFA)\n- **Federation**: **SAML** (AssumeRoleWithSAML), **OIDC/web identity** (AssumeRoleWithWebIdentity — dùng cho Cognito, GitHub Actions)\nCredentials **hết hạn** (15 phút – 12 giờ) → không cần rotate thủ công." },
+    { chapter: "STS", q: "STS: trust policy khác permission policy?",
+      a: "**Trust policy** (assume role policy) — trả lời **AI được assume** role này (`Principal`, `sts:AssumeRole`).\n**Permission policy** — trả lời role **được làm gì** sau khi assume (`Action`, `Resource`).\n⚠️ Cross-account thất bại thường do **thiếu 1 trong 2**: role account B phải có **trust policy** cho account A, **và** user account A phải có `sts:AssumeRole` trong identity policy.\nKMS key policy cũng là **resource policy** — cần cho phép principal cross-account **Decrypt**." },
+    { chapter: "AppConfig & Systems Manager", q: "AWS AppConfig thuộc nhóm nào và dùng để làm gì?",
+      a: "Thuộc **Systems Manager** (Management & Governance) và nằm trong **in-scope** của DVA-C02.\nDùng để **deploy cấu hình động và feature flag một cách an toàn**: có **validator**, **chiến lược rollout dần**, và **rollback tự động** theo **CloudWatch Alarm**.\n→ Cho phép **bật/tắt tính năng cho một nhóm user** mà **không cần deploy lại code**." },
+    { chapter: "AppConfig & Systems Manager", q: "AppConfig: thành phần chính?",
+      a: "**Application** → **Environment** (dev/test/prod) → **Configuration profile** (nguồn config) → **Deployment strategy** (cách rollout).\n**Configuration profile** có thể lấy từ: **hosted configuration**, **SSM Parameter Store**, **SSM Document**, **S3 object**, hoặc **Feature flag**.\n**Deployment strategy**: `AllAtOnce`, `Linear50PercentEvery30Seconds`, `Canary10Percent20Minutes`, hoặc **custom** (step %, duration, **bake time**)." },
+    { chapter: "AppConfig & Systems Manager", q: "AppConfig: rollback tự động hoạt động ra sao?",
+      a: "Gắn **CloudWatch Alarm** vào **environment**. Trong lúc **deploy** hoặc trong **bake time**, nếu alarm **ALARM** → **rollback ngay** về config version trước.\nAlarm nên đo **business metric** (error rate, 5xx, latency) chứ không chỉ hạ tầng.\nĐây là điểm **khác biệt cốt lõi** so với đọc config trực tiếp từ S3/Parameter Store — có **kiểm soát an toàn**." },
+    { chapter: "AppConfig & Systems Manager", q: "AppConfig: validator và cách app đọc config?",
+      a: "**Validator** (tối đa **2**/profile): **JSON Schema** (`JSON_SCHEMA`) kiểm tra **cú pháp**, hoặc **Lambda validator** kiểm tra **ngữ nghĩa**. Fail → **không deploy**.\n**App đọc config** qua **AppConfig Agent**: **Lambda extension**, **sidecar ECS/EKS**, hoặc agent trên EC2 → cache local, expose **`localhost:2772`**, tự poll & retry.\nHoặc gọi API `appconfig:GetConfiguration` (tự xử lý cache)." },
+    { chapter: "AppConfig & Systems Manager", q: "AppConfig khác Parameter Store và Secrets Manager?",
+      a: "**Parameter Store**: key-value **đơn giản**, version, cấu hình **ít đổi** — **không** có validator/rollout/rollback theo alarm.\n**Secrets Manager**: **secret** (password, API key) + **rotation tự động**.\n**AppConfig**: **cấu hình động & feature flag** với **validator + rollout dần + rollback tự động**.\n→ AppConfig **đọc được** Parameter Store làm source, nhưng giải bài toán **deploy an toàn**, không phải lưu trữ." },
+    { chapter: "AppConfig & Systems Manager", q: "AWS Systems Manager (SSM) gồm những gì?",
+      a: "**Parameter Store**: lưu config & secret (Standard **miễn phí**, Advanced có phí).\n**Session Manager**: **SSH vào EC2 không cần bastion / mở port 22** (qua agent + IAM).\n**Run Command**: chạy lệnh hàng loạt trên nhiều instance **không cần SSH**.\n**Patch Manager**: tự động vá OS theo lịch.\n**Automation**: runbook tự động hoá tác vụ (ví dụ bật versioning S3).\n**Fleet Manager / Inventory / State Manager**: quản lý cấu hình fleet." },
+
   ]
 });

@@ -1,6 +1,6 @@
 # AWS DVA-C02 · Flashcard & Thi thử
 
-Ứng dụng HTML tĩnh: 477 flashcard (16 section) + **6 đề thi thử** (390 câu) crawl từ Cloud Exam Pro.
+Ứng dụng HTML tĩnh: 526 flashcard (16 section) + **6 đề thi thử** (390 câu) crawl từ Cloud Exam Pro.
 
 Không backend, không tài khoản: **mọi tiến độ lưu trong `localStorage` của trình duyệt người dùng**, nên ai mở web cũng có phiên riêng của mình.
 
@@ -21,7 +21,7 @@ Mở trực tiếp bằng `file://` vẫn chạy, nhưng nên dùng server để
 index.html            giao diện + toàn bộ logic (Học / Trắc nghiệm / Thi thử / Danh sách)
 vercel.json           cấu hình deploy (cache + clean URLs)
 assets/*.woff2        font tự host (Bricolage, Be Vietnam Pro, JetBrains Mono) — chạy offline được
-data/s01.js … s16.js  477 flashcard theo 16 section
+data/s01.js … s16.js  526 flashcard theo 16 section
 data/exams/e01.js … e06.js   6 đề thi thử 65 câu (có đáp án + giải thích tiếng Việt)
 tools/crawl-cloudexam.mjs    crawler Cloud Exam Pro
 ```
@@ -67,6 +67,12 @@ vercel --prod
 - Đồng hồ đếm ngược, đánh dấu câu (phím `F`), bảng điều hướng câu hỏi (thu gọn được trên mobile)
 - Câu nhiều đáp án được nhận diện tự động
 - Nộp bài → điểm %, đúng/sai/bỏ trống, xem lại từng câu kèm giải thích
+
+## Đối chiếu đề cương DVA-C02
+
+Domain trọng số: Development 32% · Security 26% · Deployment 24% · Troubleshooting 18%.
+Các service in-scope **không có trong PDF gốc** đã được bổ sung thành thẻ riêng: **AWS AppConfig** (15 thẻ, cũng là 7 câu trong đề thi thử), **CloudShell** (4), **Amazon Q Developer** (4).
+Section 15 (Deployment) tăng từ 22 → 57 thẻ để cân với trọng số 24%.
 - Lịch sử các lần thi lưu trong `localStorage`
 
 Phím tắt khi thi: `←`/`→` chuyển câu, `1`–`5` chọn đáp án, `F` đánh dấu.
