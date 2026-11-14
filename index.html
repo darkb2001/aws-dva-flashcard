@@ -19,6 +19,13 @@
 <meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#14130F" media="(prefers-color-scheme: dark)" />
 <title>AWS DVA-C03 · Flashcard Ôn Thi</title>
+<meta name="description" content="564 flashcard, 190 câu trắc nghiệm và 6 đề thi thử 150 phút cho kỳ thi AWS Certified Developer – Associate (DVA-C03)." />
+<link rel="icon" href="assets/favicon.ico" sizes="any" />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32" />
+<link rel="icon" href="assets/favicon-16.png" type="image/png" sizes="16x16" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+<link rel="mask-icon" href="assets/favicon.svg" color="#B8401F" />
 <style>
   /* =========================================================
      AWS DVA-C02 — "desk" design system
@@ -254,6 +261,7 @@
     font-weight:800;font-size:13px;letter-spacing:.02em;
     box-shadow:var(--shadow-sm);
   }
+  .logo svg{width:23px;height:23px;display:block}
   .brand h1{font-size:14.5px;margin:0;line-height:1.2;letter-spacing:-.01em}
   .brand p{margin:3px 0 0;font-size:12px;color:var(--muted);letter-spacing:.01em;font-weight:400}
   .side-close{
@@ -1202,7 +1210,13 @@
   <div class="scrim" id="scrim"></div>
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="logo">AWS</div>
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="presentation">
+          <rect x="5.5" y="7.2" width="12.6" height="9.4" rx="2.1" transform="rotate(-12 11.8 11.9)" fill="currentColor" opacity=".38"/>
+          <rect x="5" y="7" width="12.6" height="9.6" rx="2.1" fill="currentColor"/>
+          <path d="M8.1 11.9l1.9 1.9 4.6-4.7" fill="none" stroke="var(--accent)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <div>
         <h1>DVA-C03 Flashcard</h1>
         <p>16 section · ôn thi Developer Associate</p>

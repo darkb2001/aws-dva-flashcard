@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="AWS DVA-C03">
+  <defs>
+    <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C64A24"/>
+      <stop offset="1" stop-color="#9E3417"/>
+    </linearGradient>
+  </defs>
+
+  <!-- warm plate, same radius language as the sidebar .logo -->
+  <rect width="64" height="64" rx="15" fill="url(#plate)"/>
+
+  <!-- Card. Everything is inside the 8px safe margin and drawn with fat strokes,
+       because a favicon is mostly seen at 16px where a rotated card or a 1px
+       outline turns into a smudge. -->
+  <rect x="14" y="17" width="36" height="30" rx="7" fill="#FBF8F3"/>
+
+  <!-- check, thick enough to survive downscaling -->
+  <path d="M22 32.5 28.5 39 42 24.5" fill="none" stroke="#9E3417"
+        stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
