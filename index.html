@@ -576,6 +576,29 @@
   .explain.on{display:block}
   .explain b{color:var(--good);font-weight:600}
   .explain .bad{color:var(--bad)}
+  .qexhead{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+  .qvlabel{
+    font-size:9.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;
+    color:var(--muted);
+  }
+  .qexhead b{font-size:13.5px;line-height:1.5;color:var(--good);font-weight:600}
+  .qexbody{font-size:12.5px;line-height:1.68;color:var(--text-2);max-width:68ch}
+  .qexbody p+p{margin-top:7px}
+  .qexbody code{
+    font-family:var(--font-mono);font-size:.92em;background:var(--panel-2);
+    border:1px solid var(--line);border-radius:4px;padding:.5px 4px;color:var(--text);
+  }
+  .qexbody b{color:var(--text);font-weight:600}
+  .qexnote{
+    margin-top:12px;padding-top:11px;border-top:1px solid var(--line);
+    font-size:12.5px;line-height:1.62;color:var(--muted);max-width:68ch;
+  }
+  .qexnote code{
+    font-family:var(--font-mono);font-size:.92em;background:var(--panel-2);
+    border:1px solid var(--line);border-radius:4px;padding:.5px 4px;
+  }
+  .rvtips{margin-top:12px}
+  .qextip{font-size:12.5px;line-height:1.62;color:var(--text-2);margin:0;max-width:68ch}
   .fb{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600}
   .fb .i{font-size:14px}
   .fb.ok{color:var(--good)}
@@ -658,7 +681,17 @@
     font-variant-numeric:tabular-nums;
   }
   .resume-actions{display:flex;gap:8px;flex:0 0 auto}
-  @media (max-width:560px){
+  @media (max-width:640px){
+    .rv{padding:14px 13px}
+    .rvh{gap:6px;margin-bottom:8px}
+    .rvpick{margin-left:0;flex-basis:100%;order:9;padding-top:2px}
+    .rvq{font-size:13.5px;margin-bottom:11px}
+    .rvopt{padding:8px 9px;font-size:12.5px;gap:8px}
+    .rvwhy{font-size:12px;padding-left:8px}
+    .rvcode{font-size:10.5px;padding:7px 8px}
+    .rvtips{padding:9px 10px}
+    .rvfilters{gap:6px}
+    .rvfilters .chip{padding:5px 10px;font-size:11px}
     .resume{padding:12px 13px;gap:11px;margin:-6px 0 16px}
     .resume-txt{flex:1 1 100%}
     .resume-actions{flex:1 1 100%}
@@ -787,40 +820,135 @@
   .resbox span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:500}
   .resactions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
 
-  .resreview{display:flex;flex-direction:column;gap:1px;border-top:1px solid var(--line)}
-  .rv{background:transparent;padding:22px 0;border-bottom:1px solid var(--line)}
-  .rvh{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+  .resreview{display:flex;flex-direction:column;gap:10px}
+  .rvfilters{
+    display:flex;gap:7px;flex-wrap:wrap;align-items:center;
+    padding-bottom:12px;margin-bottom:2px;border-bottom:1px solid var(--line);
+  }
+  .rvfilters .chip{padding:6px 11px;font-size:11.5px}
+  .rv{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:17px 19px;box-shadow:var(--shadow-sm);position:relative;
+  }
+  .rv.ok{border-color:color-mix(in srgb,var(--good) 30%,var(--line))}
+  .rv.bad{border-color:color-mix(in srgb,var(--bad) 32%,var(--line))}
+  .rv.skip{border-color:var(--line)}
+  .rvh{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+  .rvnum{
+    font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-2);
+    font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+  }
   .rvtag{
-    padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;letter-spacing:.04em;
-    border:1px solid transparent;
+    padding:2.5px 7px;border-radius:5px;font-size:10.5px;font-weight:600;letter-spacing:.045em;
+    text-transform:uppercase;border:1px solid transparent;white-space:nowrap;
   }
   .rv.ok .rvtag{background:var(--good-soft);color:var(--good);border-color:color-mix(in srgb,var(--good) 26%,transparent)}
   .rv.bad .rvtag{background:var(--bad-soft);color:var(--bad);border-color:color-mix(in srgb,var(--bad) 26%,transparent)}
   .rv.skip .rvtag{background:var(--panel-2);color:var(--muted);border-color:var(--line)}
-  .rvq{font-size:14px;line-height:1.68;white-space:pre-wrap;margin-bottom:14px;max-width:70ch;color:var(--text)}
-  .rvopts{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+  .rvtag.soft{background:transparent;color:var(--muted);border-color:var(--line);text-transform:none;letter-spacing:.01em;font-weight:500}
+  .rvpick{
+    margin-left:auto;font-family:var(--font-mono);font-size:11.5px;color:var(--muted);
+    font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  .rvpick b{color:var(--text-2);font-weight:600}
+  .rvq{font-size:14px;line-height:1.66;white-space:pre-wrap;margin-bottom:13px;max-width:68ch;color:var(--text)}
+  .rvopts{display:flex;flex-direction:column;gap:5px}
   .rvopt{
-    display:grid;grid-template-columns:20px 1fr auto;gap:10px;align-items:start;
-    font-size:13px;line-height:1.58;border:1px solid var(--line);border-radius:8px;
-    padding:9px 11px;background:var(--panel);
+    display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:9px;align-items:start;
+    font-size:13px;line-height:1.55;border:1px solid var(--line);border-radius:9px;
+    padding:9px 11px;background:var(--bg-soft);transition:var(--dur) var(--ease);
   }
   .rvopt .k{
     width:19px;height:19px;border-radius:5px;display:grid;place-items:center;
     font-family:var(--font-mono);font-size:10px;font-weight:600;
-    border:1px solid var(--line);color:var(--muted);
+    border:1px solid var(--line);color:var(--muted);background:var(--panel);
   }
-  .rvopt.right{border-color:color-mix(in srgb,var(--good) 45%,transparent);background:var(--good-soft)}
+  .rvopt.right{border-color:color-mix(in srgb,var(--good) 42%,transparent);background:var(--good-soft)}
   .rvopt.right .k{background:var(--good);color:var(--bg);border-color:transparent}
-  .rvopt.wrong{border-color:color-mix(in srgb,var(--bad) 45%,transparent);background:var(--bad-soft)}
+  .rvopt.wrong{border-color:color-mix(in srgb,var(--bad) 42%,transparent);background:var(--bad-soft)}
   .rvopt.wrong .k{background:var(--bad);color:var(--bg);border-color:transparent}
-  .rvopt .t{white-space:pre-wrap;min-width:0;word-break:break-word}
-  .rvopt .badge{font-size:11px;color:var(--muted);white-space:nowrap;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+  .rvopt .t{white-space:pre-wrap;min-width:0;word-break:break-word;color:var(--text-2)}
+  .rvopt.right .t{color:var(--text)}
+  .rvopt .badge{
+    font-size:10px;color:var(--muted);white-space:nowrap;letter-spacing:.05em;
+    text-transform:uppercase;font-weight:600;padding-top:2px;
+  }
   .rvopt.right .badge{color:var(--good)}
   .rvopt.wrong .badge{color:var(--bad)}
-  .rvexp{
-    font-size:13px;line-height:1.75;white-space:pre-wrap;border-top:1px solid var(--line);
-    padding-top:14px;color:var(--text-2);max-width:70ch;
+  .rvwhy{
+    margin-top:7px;padding-left:9px;border-left:2px solid color-mix(in srgb,var(--text) 12%,transparent);
+    font-size:12.5px;line-height:1.62;color:var(--text-2);
   }
+  .rvopt.right .rvwhy{border-left-color:color-mix(in srgb,var(--good) 38%,transparent)}
+  .rvopt.wrong .rvwhy{border-left-color:color-mix(in srgb,var(--bad) 34%,transparent)}
+  .rvwhy p+p{margin-top:5px}
+  .rvlist{display:flex;flex-direction:column;gap:10px}
+  .rvn{
+    font-family:var(--font-mono);font-size:10px;font-variant-numeric:tabular-nums;
+    opacity:.7;margin-left:1px;
+  }
+  .rvempty{font-size:13px;color:var(--muted);padding:18px 2px}
+  .rvcode{
+    font-family:var(--font-mono);font-size:11.5px;line-height:1.55;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:7px;
+    padding:8px 10px;margin:6px 0;overflow-x:auto;color:var(--text-2);
+    white-space:pre;tab-size:2;
+  }
+  .rvcode code{font:inherit;background:none;padding:0;border:0}
+  .rvwhy code,.rvbul code{
+    font-family:var(--font-mono);font-size:.92em;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:4px;
+    padding:.5px 4px;color:var(--text);
+  }
+  .rvnotes{
+    display:flex;flex-direction:column;gap:13px;margin-top:14px;padding-top:13px;
+    border-top:1px solid var(--line);
+  }
+  .rvlbl{
+    display:block;font-size:10px;text-transform:uppercase;letter-spacing:.07em;
+    font-weight:600;color:var(--muted);margin-bottom:6px;
+  }
+  .rvbul{list-style:none;display:flex;flex-direction:column;gap:5px;font-size:12.5px;line-height:1.62;color:var(--text-2);max-width:68ch}
+  .rvbul li{display:grid;grid-template-columns:9px minmax(0,1fr);gap:8px}
+  .rvbul li > span{min-width:0;overflow-wrap:anywhere}
+  .rvbul li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--line-strong);margin-top:.55em}
+  .rvmore{max-width:68ch}
+  .rvmore summary{
+    display:flex;align-items:center;gap:7px;cursor:pointer;list-style:none;
+    font-size:12.5px;font-weight:500;color:var(--text-2);padding:3px 0;
+    border-radius:6px;
+  }
+  .rvmore summary::-webkit-details-marker{display:none}
+  .rvmore summary::before{
+    content:"";width:5px;height:5px;flex:0 0 auto;
+    border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;
+    transform:rotate(-45deg);transition:transform var(--dur) var(--ease);margin-right:2px;
+  }
+  .rvmore[open] summary::before{transform:rotate(45deg)}
+  .rvmore summary:hover{color:var(--text)}
+  .rvwrong{display:flex;flex-direction:column;gap:10px;margin-top:9px}
+  .rvwrong .w{display:grid;grid-template-columns:20px minmax(0,1fr);gap:9px;align-items:start}
+  .rvwrong .k{
+    width:18px;height:18px;border-radius:5px;display:grid;place-items:center;
+    font-family:var(--font-mono);font-size:9.5px;font-weight:600;
+    border:1px solid var(--line);color:var(--muted);background:var(--panel-2);
+  }
+  .rvwrong .wt{font-size:12.5px;line-height:1.55;color:var(--text-2);white-space:pre-wrap;word-break:break-word}
+  .rvwrong p{font-size:12.5px;line-height:1.62;color:var(--muted);margin-top:4px}
+  .rvtips{
+    background:var(--warn-soft);border-radius:9px;padding:10px 12px;
+    min-width:0;
+  }
+  .rvnotes > *{min-width:0}
+  .rvwhy,.rvref,.rvwrong .wt{overflow-wrap:anywhere}
+  .rvcode{overflow-x:auto;max-width:100%}
+  .rvtips .rvlbl{color:var(--warn);margin-bottom:5px}
+  .rvtips .rvbul{color:var(--text-2)}
+  .rvtips .rvbul li::before{background:color-mix(in srgb,var(--warn) 45%,transparent)}
+  .rvref{font-size:11.5px;line-height:1.6;color:var(--muted);max-width:68ch}
+  .rvref b{font-weight:600;color:var(--text-2)}
+  .rvref a{color:var(--cool);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--cool) 35%,transparent)}
+  .rvref a:hover{border-bottom-color:var(--cool)}
 
   .histrow{
     display:grid;grid-template-columns:1fr auto auto auto;gap:14px;align-items:center;
@@ -1697,15 +1825,12 @@ function answerQuiz(i) {
     : `<span class="fb no">${ICON_CROSS} Chưa đúng — xem giải thích bên dưới</span>`;
   const ex = $("quizExplain");
   ex.classList.add("on");
-  let html = "<div><b>Đáp án:</b> " + escapeHtml(q.answer) + "</div>";
+  let html = `<div class="qexhead"><span class="qvlabel">Đáp án đúng</span><b>${escapeHtml(q.answer)}</b></div>`;
   let rest = (q.card.a || "").replace(/\*\*/g, "").trim();
   if (rest.startsWith(q.answerKey)) rest = rest.slice(q.answerKey.length).trim();
-  if (rest) {
-    const full = escapeHtml(rest).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-    html += `<div style="margin-top:8px;white-space:pre-wrap">${full}</div>`;
-  }
-  if (q.card.note) html += `<div class="n" style="color:var(--muted);margin-top:10px;font-size:12.5px">${escapeHtml(q.card.note)}</div>`;
-  if (q.card.tip) html += `<div class="tip-line">${ICON_FLAG}${escapeHtml(q.card.tip)}</div>`;
+  if (rest) html += `<div class="qexbody">${fmtInline(rest)}</div>`;
+  if (q.card.note) html += `<div class="qexnote"><span class="qvlabel">Ghi chú</span>${fmtInline(q.card.note)}</div>`;
+  if (q.card.tip) html += `<div class="rvtips"><span class="rvlbl">Mẹo làm bài</span><p class="qextip">${fmtInline(q.card.tip)}</p></div>`;
   ex.innerHTML = html;
   updateQuizScore();
 }
@@ -2067,37 +2192,243 @@ function renderExamResult() {
     `<div class="resbox"><b style="color:${color || "inherit"}">${val}</b><span>${label}</span></div>`
   ).join("");
 
+  reviewFilter = "all";
   $("resReviewBody").hidden = true;
   $("resReviewBody").innerHTML = "";
   $("resReview").textContent = "Xem lại từng câu";
 }
 
-function renderExamReview() {
+/* ---------- explanation: turn the crawled prose into something readable ----------
+   The source text is a fixed shape: a summary, the right answer plus reasoning,
+   one block per wrong option, optional tips, optional references. Rendering it raw
+   made people re-read a wall of text and hunt for which option each note belonged to,
+   so it is split into those parts and re-attached to the option it explains. */
+let reviewFilter = "all";   // all | wrong | skipped
+
+const normText = (x) => String(x || "")
+  .replace(/```/g, " ")
+  .toLowerCase()
+  .replace(/[^a-z0-9]/g, "");
+
+const EXPLAIN_HEADS = [
+  { re: /^\s*(?:📝\s*)?Tóm tắt đề\s*:?\s*$/i, key: "summary" },
+  { re: /^\s*(?:✅\s*)?Đáp án đúng\s*:?\s*$/i, key: "correct" },
+  { re: /^\s*(?:Các\s+)?đáp án sai\s*:?\s*$/i, key: "wrong" },
+  { re: /^\s*(?:🔑\s*)?Tips?(?:\s*(?:and|&)\s*tricks)?\s*:?\s*$/i, key: "tips" },
+  { re: /^\s*(?:📖\s*)?References?\s*:?\s*$/i, key: "ref" },
+];
+
+const stripMark = (line) => String(line)
+  .replace(/^\s*[•·*]\s+/, "")
+  .replace(/^→\s*/, "")
+  .replace(/^❌\s*/, "")
+  .trim();
+
+function parseExplanation(raw) {
+  // prose lines are plain strings; fenced blocks become { code } so they keep their shape
+  const out = { summary: [], correct: { text: "", why: [] }, wrong: [], tips: [], ref: [] };
+  let mode = "";
+  let cur = null;
+  let inFence = false;
+  let fenceBuf = null;
+  const add = (target, value) => { if (value) target.push(value); };
+  const target = () => {
+    if (cur) return cur.why;
+    if (mode === "wrong") return [];       // stray fence in a section we do not keep
+    return out.correct.why;
+  };
+
+  for (const rawLine of String(raw || "").split("\n")) {
+    const line = rawLine.replace(/\s+$/, "");
+    const t = line.trim();
+
+    if (t.startsWith("```")) {
+      if (inFence) {
+        inFence = false;
+        if (fenceBuf) { add(target(), { code: fenceBuf.join("\n") }); fenceBuf = null; }
+      } else { inFence = true; fenceBuf = []; }
+      continue;
+    }
+    if (inFence) { if (fenceBuf) fenceBuf.push(line); continue; }
+    if (!t) continue;
+
+    const head = EXPLAIN_HEADS.find((h) => h.re.test(t));
+    if (head) { mode = head.key; cur = null; continue; }
+
+    if (mode === "summary") add(out.summary, stripMark(t));
+    else if (mode === "tips") add(out.tips, stripMark(t));
+    else if (mode === "ref") add(out.ref, stripMark(t));
+    else if (mode === "correct") {
+      if (t.startsWith("→") || out.correct.text) add(out.correct.why, stripMark(t));
+      else out.correct.text = stripMark(t);
+    } else if (mode === "wrong") {
+      if (t.startsWith("❌")) {
+        cur = { text: stripMark(t), why: [] };
+        out.wrong.push(cur);
+      } else if (cur) add(cur.why, stripMark(t));
+    }
+  }
+  return out;
+}
+
+/** Find which option a piece of explanation is talking about. */
+function optionIndexFor(options, text) {
+  const nt = normText(text);
+  if (!nt) return -1;
+  const exact = options.findIndex((o) => normText(o) === nt);
+  if (exact > -1) return exact;
+  return options.findIndex((o) => {
+    const no = normText(o);
+    return no.length > 12 && (no.startsWith(nt) || nt.startsWith(no));
+  });
+}
+
+/** Inline formatting for explanation prose: `code`, **bold**, line hints. */
+function fmtInline(text) {
+  return escapeHtml(text)
+    .replace(/`([^`\n]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>");
+}
+
+/** References arrive as "Title · https://…" — link the URL, keep the label short. */
+function formatRef(text) {
+  return String(text).split(/\s*·\s*/).map((chunk) => {
+    const part = chunk.trim();
+    if (!part) return "";
+    if (/^https?:\/\//.test(part)) {
+      let label = part.replace(/^https?:\/\//, "").replace(/\/$/, "");
+      label = label.length > 46 ? label.slice(0, 44) + "…" : label;
+      return `<a href="${escapeHtml(part)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+    }
+    return escapeHtml(part);
+  }).filter(Boolean).join(" · ");
+}
+
+function bulletList(items) {
+  if (!items.length) return "";
+  return `<ul class="rvbul">${items.map((x) => `<li><span>${fmtInline(x)}</span></li>`).join("")}</ul>`;
+}
+
+function whyBlock(items) {
+  if (!items.length) return "";
+  return items.map((it) => {
+    if (it && typeof it === "object" && "code" in it) {
+      return `<pre class="rvcode"><code>${escapeHtml(it.code)}</code></pre>`;
+    }
+    return `<p>${fmtInline(it)}</p>`;
+  }).join("");
+}
+
+function renderReviewItem(d, q) {
+  const cls = d.skipped ? "skip" : (d.ok ? "ok" : "bad");
+  const tag = d.skipped ? "Bỏ trống" : (d.ok ? "Đúng" : "Sai");
+  const exp = parseExplanation(q.answer);
+
+  // reason notes indexed by option, so each option can carry its own explanation
+  const whyByOption = {};
+  const correctIdx = optionIndexFor(q.options, exp.correct.text);
+  if (correctIdx > -1 && exp.correct.why.length) whyByOption[correctIdx] = exp.correct.why;
+  else if (exp.correct.why.length) {
+    // answer text was itself a code block — the reasoning applies to the true options
+    d.want.forEach((oi) => { whyByOption[oi] = exp.correct.why; });
+  }
+  const strayWrong = [];
+  for (const w of exp.wrong) {
+    const wi = optionIndexFor(q.options, w.text);
+    if (wi > -1) { if (w.why.length && !whyByOption[wi]) whyByOption[wi] = w.why; }
+    else strayWrong.push(w);
+  }
+
+  const opts = q.options.map((o, oi) => {
+    const isRight = d.want.includes(oi);
+    const isPicked = d.picked.includes(oi);
+    let c = "rvopt";
+    if (isRight) c += " right";
+    else if (isPicked) c += " wrong";
+    const badge = isRight && isPicked ? "đáp án · bạn chọn"
+      : isRight ? "đáp án"
+      : isPicked ? "bạn chọn"
+      : "";
+    const why = (isRight || isPicked) && whyByOption[oi] ? whyBlock(whyByOption[oi]) : "";
+    return `<div class="${c}">
+      <span class="k">${letter(oi)}</span>
+      <div class="t">${escapeHtml(o)}${why ? `<div class="rvwhy">${why}</div>` : ""}</div>
+      <span class="badge">${badge}</span>
+    </div>`;
+  }).join("");
+
+  // options not shown inline still get their reasoning, folded away
+  const leftover = [];
+  q.options.forEach((o, oi) => {
+    if (d.want.includes(oi) || d.picked.includes(oi)) return;
+    if (!whyByOption[oi]) return;
+    leftover.push(`<div class="w"><span class="k">${letter(oi)}</span><div><div class="wt">${escapeHtml(o)}</div>${whyBlock(whyByOption[oi])}</div></div>`);
+  });
+  strayWrong.forEach((w) => {
+    leftover.push(`<div class="w"><span class="k">–</span><div><div class="wt">${escapeHtml(w.text)}</div>${whyBlock(w.why)}</div></div>`);
+  });
+
+  const pick = d.skipped ? "Không chọn" : "Bạn chọn " + d.picked.map(letter).join(", ") + " · đáp án " + d.want.map(letter).join(", ");
+
+  const notes = [];
+  if (exp.summary.length) {
+    notes.push(`<div><span class="rvlbl">Tóm tắt đề</span>${bulletList(exp.summary)}</div>`);
+  }
+  if (leftover.length) {
+    notes.push(`<details class="rvmore"><summary>Vì sao ${leftover.length} phương án khác chưa đúng</summary><div class="rvwrong">${leftover.join("")}</div></details>`);
+  }
+  if (exp.tips.length) {
+    notes.push(`<div class="rvtips"><span class="rvlbl">Mẹo làm bài</span>${bulletList(exp.tips)}</div>`);
+  }
+  if (exp.ref.length) {
+    notes.push(`<div class="rvref"><b>Nguồn:</b> ${exp.ref.map(formatRef).join(" · ")}</div>`);
+  }
+
+  return `<article class="rv ${cls}" data-state="${d.skipped ? "skipped" : (d.ok ? "ok" : "bad")}">
+    <div class="rvh">
+      <span class="rvnum">Câu ${d.i + 1}</span>
+      <span class="rvtag">${tag}</span>
+      ${q.multi ? '<span class="rvtag soft">nhiều đáp án</span>' : ""}
+      <span class="rvpick">${pick}</span>
+    </div>
+    <div class="rvq">${escapeHtml(q.q)}</div>
+    <div class="rvopts">${opts}</div>
+    ${notes.length ? `<div class="rvnotes">${notes.join("")}</div>` : ""}
+  </article>`;
+}
+
+function renderReviewList() {
   const s = exam.set;
   const r = exam.result;
   const body = $("resReviewBody");
 
-  body.innerHTML = r.detail.map((d) => {
-    const q = s.questions[d.i];
-    const cls = d.skipped ? "skip" : (d.ok ? "ok" : "bad");
-    const tag = d.skipped ? "BỎ TRỐNG" : (d.ok ? "ĐÚNG" : "SAI");
-    const opts = q.options.map((o, oi) => {
-      const isRight = d.want.includes(oi);
-      const isPicked = d.picked.includes(oi);
-      let c = "rvopt";
-      if (isRight) c += " right";
-      else if (isPicked) c += " wrong";
-      const badge = isRight ? "đáp án" : (isPicked ? "bạn chọn" : "");
-      return `<div class="${c}"><span class="k">${letter(oi)}</span><span class="t">${escapeHtml(o)}</span><span class="badge">${badge}</span></div>`;
-    }).join("");
-    return `<div class="rv ${cls}">
-      <div class="rvh"><span class="rvtag">${tag}</span><span>Câu ${d.i + 1}</span>${q.multi ? '<span class="rvtag">nhiều đáp án</span>' : ""}</div>
-      <div class="rvq">${escapeHtml(q.q)}</div>
-      <div class="rvopts">${opts}</div>
-      ${q.answer ? `<div class="rvexp">${escapeHtml(q.answer)}</div>` : ""}
-    </div>`;
-  }).join("");
+  const counts = { all: r.detail.length, bad: 0, skipped: 0 };
+  r.detail.forEach((d) => { if (d.skipped) counts.skipped++; else if (!d.ok) counts.bad++; });
 
+  const chips = [["all", "Tất cả"], ["bad", "Câu sai"], ["skipped", "Bỏ trống"]]
+    .filter(([k]) => k === "all" || counts[k] > 0)
+    .map(([k, label]) =>
+      `<button class="chip${reviewFilter === k ? " on" : ""}" data-rvfilter="${k}"
+        aria-pressed="${reviewFilter === k}">${label} <span class="rvn">${counts[k]}</span></button>`
+    ).join("");
+
+  const items = r.detail
+    .filter((d) => reviewFilter === "all"
+      || (reviewFilter === "bad" && !d.ok && !d.skipped)
+      || (reviewFilter === "skipped" && d.skipped))
+    .map((d) => renderReviewItem(d, s.questions[d.i]));
+
+  body.innerHTML = `<div class="rvfilters">${chips}</div>
+    <div class="rvlist">${items.join("") || '<p class="rvempty">Không có câu nào trong nhóm này.</p>'}</div>`;
+
+  body.querySelectorAll("[data-rvfilter]").forEach((b) =>
+    b.addEventListener("click", () => { reviewFilter = b.dataset.rvfilter; renderReviewList(); })
+  );
+}
+
+function renderExamReview() {
+  const body = $("resReviewBody");
+  renderReviewList();
   body.hidden = false;
   $("resReview").textContent = "Ẩn phần xem lại";
   body.scrollIntoView({ behavior: "smooth", block: "start" });
