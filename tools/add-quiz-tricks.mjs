@@ -133,7 +133,8 @@ function pickTrick(text) {
 }
 
 function alreadyHasTrick(explanation) {
-  return /^Tips?\s*:/im.test(explanation || "");
+  // the source itself ships "**Tips:** …" on 105 questions
+  return /^\s*\**\s*(?:Tips?|Trick|Mẹo)\s*\**\s*:/im.test(explanation || "");
 }
 
 async function main() {

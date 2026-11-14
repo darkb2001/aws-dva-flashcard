@@ -109,7 +109,11 @@ Ba kho **tách biệt**, đừng lẫn:
 
 Trước đây chế độ Trắc nghiệm **mượn đáp án của thẻ khác làm phương án nhiễu**, nên phương án có thể phản đối chính câu hỏi và “đáp án đúng” thực ra là câu trả lời của một thẻ khác. Đã bỏ hẳn cách đó: trắc nghiệm giờ chỉ dùng câu hỏi có phương án và đáp án viết riêng cho nó.
 
-Nguồn bank: `main.dx407egisqiw0.amplifyapp.com/questions.json` (255 câu gốc, sau khử trùng còn 190). Mỗi câu có giải thích tiếng Việt ~850 ký tự; `tools/add-quiz-tricks.mjs` bổ sung thêm mục **Trick làm bài** dựa trên từ khoá quyết định trong đề (LEAST/MOST, cross-account, streaming, throttling…).
+Nguồn bank: `main.dx407egisqiw0.amplifyapp.com/questions.json`. File gốc có **255 dòng nhưng chỉ 190 câu**: 65 dòng là bản sao của cùng một câu, mỗi câu xuất hiện 2 lần (một lần id `qN` giải thích ngắn, một lần id số giải thích dài). Importer giữ bản giải thích đầy đủ hơn, nên **không mất câu nào** — đã đối chiếu: 190 khoá stem duy nhất ở nguồn, 190 câu trong bank.
+
+`tools/add-quiz-tricks.mjs` bổ sung mục **Trick làm bài** cho những câu chưa có (nguồn đã có `**Tips:**` ở 105 câu). Trick lấy từ từ khoá quyết định trong đề: LEAST/MOST, cross-account, streaming, throttling, cold start, GSI hot partition…
+
+Id trong bank được đánh lại từ 1; nguồn có id trùng (hai `q5`, `14`–`65` mỗi số hai lần) nên nếu giữ nguyên thì tiến độ `store.quiz[id]` sẽ gộp nhầm hai câu khác nhau.
 
 ```bash
 node tools/import-amplify-quiz.mjs /tmp/quiz-bank.json   # nạp lại bank

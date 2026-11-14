@@ -117,6 +117,10 @@
     --font-display:"Bricolage","BeVietnam",ui-sans-serif,-apple-system,"Segoe UI",sans-serif;
     --font-mono:"JetMono",ui-monospace,SFMono-Regular,Menlo,monospace;
 
+    /* one reading measure for every long-form block, so an explanation never
+       collapses into a narrow column of wrapped words */
+    --read:78ch;
+
     --dur:.18s;
     --ease:cubic-bezier(.22,1,.36,1);
   }
@@ -520,7 +524,7 @@
   .qtext b{font-weight:700}
   .atext{
     font-size:clamp(14.5px,1.5vw,16.5px);line-height:1.68;white-space:pre-wrap;
-    margin:0;max-width:68ch;color:var(--text-2);
+    margin:0;max-width:var(--read);color:var(--text-2);
     font-feature-settings:"kern" 1;
   }
   .atext b{color:var(--text);font-weight:600}
@@ -528,7 +532,7 @@
     margin-top:20px;background:var(--cool-soft);
     padding:14px 16px;border-radius:var(--radius-sm);
     font-size:13px;line-height:1.62;color:var(--text-2);
-    max-width:68ch;
+    max-width:var(--read);
   }
   .note b{color:var(--cool);font-weight:600}
   .flip-hint{
@@ -596,7 +600,9 @@
     font-family:var(--font-mono);font-size:10.5px;font-weight:600;width:21px;height:21px;
     border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;
     flex:0 0 auto;color:var(--muted);margin-top:1px;
+    box-sizing:border-box;padding:0;line-height:1;
   }
+  .opt > span:not(.k){min-width:0;overflow-wrap:anywhere}
   .opt.correct{border-color:var(--good);background:var(--good-soft);color:var(--text)}
   .opt.correct .k{background:var(--good);color:var(--bg);border-color:transparent}
   .opt.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--text)}
@@ -614,35 +620,38 @@
     font-family:var(--font-mono);font-size:11px;color:var(--good);
     margin-right:7px;flex:0 0 auto;
   }
-  .qansbox p{display:flex;align-items:baseline}
-  .qlead{font-size:12.5px;line-height:1.6;color:var(--text);margin:0}
-  .qexsect{margin-top:12px}
-  .qexsect .rvlbl{display:block;margin-bottom:5px}
+  .qansbox p{display:flex;align-items:baseline;gap:0}
+  .qansbox p span{min-width:0;overflow-wrap:anywhere}
+  .qlead{font-size:12.5px;line-height:1.6;color:var(--text);margin:0;overflow-wrap:anywhere}
+  .qexsect{margin-top:14px}
+  .qexsect .rvlbl{display:block;margin-bottom:6px}
   .qw{
-    display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;
+    display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start;
     padding:7px 0;border-top:1px solid var(--line);
   }
   .qw:first-child{border-top:0}
   .qw .k{
     font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--muted);
-    border:1px solid var(--line);border-radius:4px;padding:1px 4px;margin-top:1px;
+    border:1px solid var(--line);border-radius:4px;padding:1px 5px;margin-top:1px;
+    white-space:nowrap;flex:0 0 auto;
   }
-  .qw .wt{font-size:12px;color:var(--text-2);line-height:1.5}
-  .qrlist>li{margin-top:8px}
-  .qrlist>li:first-child{margin-top:0}
-  .qrt{display:block;font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:3px}
-  .qrbul{margin:3px 0 0;padding-left:14px;list-style:disc}
+  .qw .wt{font-size:12px;color:var(--text-2);line-height:1.55;min-width:0;overflow-wrap:anywhere}
+  .qrlist{display:flex;flex-direction:column;gap:10px}
+  .qrlist>li{margin:0;min-width:0}
+  .qrlist>li>span{display:block;min-width:0;overflow-wrap:anywhere}
+  .qrt{display:block;font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:3px;overflow-wrap:anywhere}
+  .qrbul{margin:4px 0 0;padding-left:16px;list-style:disc;display:flex;flex-direction:column;gap:3px}
   .qrbul li{
-    font-size:12px;line-height:1.55;color:var(--text-2);margin-top:2px;
-    padding-left:2px;
+    font-size:12px;line-height:1.6;color:var(--text-2);
+    min-width:0;overflow-wrap:anywhere;
   }
   .qrbul li::marker{color:var(--muted)}
   .qw p{font-size:11.5px;line-height:1.55;color:var(--muted);margin:3px 0 0}
   .quizfoot{display:flex;align-items:center;gap:8px;margin-top:22px;flex-wrap:wrap}
   .score{font-family:var(--font-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
   .explain{
-    margin-top:18px;font-size:13.5px;line-height:1.68;border-top:1px solid var(--line);
-    padding-top:16px;display:none;color:var(--text-2);max-width:68ch;
+    margin-top:16px;font-size:13px;line-height:1.62;border-top:1px solid var(--line);
+    padding-top:16px;display:none;color:var(--text-2);max-width:var(--read);
   }
   .explain.on{display:block}
   .explain b{color:var(--good);font-weight:600}
@@ -653,7 +662,7 @@
     color:var(--muted);
   }
   .qexhead b{font-size:13.5px;line-height:1.5;color:var(--good);font-weight:600}
-  .qexbody{font-size:12.5px;line-height:1.68;color:var(--text-2);max-width:68ch}
+  .qexbody{font-size:12.5px;line-height:1.68;color:var(--text-2);max-width:var(--read)}
   .qexbody p+p{margin-top:7px}
   .qexbody code{
     font-family:var(--font-mono);font-size:.92em;background:var(--panel-2);
@@ -662,14 +671,14 @@
   .qexbody b{color:var(--text);font-weight:600}
   .qexnote{
     margin-top:12px;padding-top:11px;border-top:1px solid var(--line);
-    font-size:12.5px;line-height:1.62;color:var(--muted);max-width:68ch;
+    font-size:12.5px;line-height:1.62;color:var(--muted);max-width:var(--read);
   }
   .qexnote code{
     font-family:var(--font-mono);font-size:.92em;background:var(--panel-2);
     border:1px solid var(--line);border-radius:4px;padding:.5px 4px;
   }
   .rvtips{margin-top:12px}
-  .qextip{font-size:12.5px;line-height:1.62;color:var(--text-2);margin:0;max-width:68ch}
+  .qextip{font-size:12.5px;line-height:1.62;color:var(--text-2);margin:0;max-width:var(--read)}
   .fb{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600}
   .fb .i{font-size:14px}
   .fb.ok{color:var(--good)}
@@ -940,7 +949,7 @@
     font-variant-numeric:tabular-nums;white-space:nowrap;
   }
   .rvpick b{color:var(--text-2);font-weight:600}
-  .rvq{font-size:14px;line-height:1.66;white-space:pre-wrap;margin-bottom:13px;max-width:68ch;color:var(--text)}
+  .rvq{font-size:14px;line-height:1.66;white-space:pre-wrap;margin-bottom:13px;max-width:var(--read);color:var(--text)}
   .rvopts{display:flex;flex-direction:column;gap:5px}
   .rvopt{
     display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:9px;align-items:start;
@@ -997,11 +1006,11 @@
     display:block;font-size:10px;text-transform:uppercase;letter-spacing:.07em;
     font-weight:600;color:var(--muted);margin-bottom:6px;
   }
-  .rvbul{list-style:none;display:flex;flex-direction:column;gap:5px;font-size:12.5px;line-height:1.62;color:var(--text-2);max-width:68ch}
+  .rvbul{list-style:none;display:flex;flex-direction:column;gap:5px;font-size:12.5px;line-height:1.62;color:var(--text-2);max-width:var(--read)}
   .rvbul li{display:grid;grid-template-columns:9px minmax(0,1fr);gap:8px}
   .rvbul li > span{min-width:0;overflow-wrap:anywhere}
   .rvbul li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--line-strong);margin-top:.55em}
-  .rvmore{max-width:68ch}
+  .rvmore{max-width:var(--read)}
   .rvmore summary{
     display:flex;align-items:center;gap:7px;cursor:pointer;list-style:none;
     font-size:12.5px;font-weight:500;color:var(--text-2);padding:3px 0;
@@ -1018,9 +1027,11 @@
   .rvwrong{display:flex;flex-direction:column;gap:10px;margin-top:9px}
   .rvwrong .w{display:grid;grid-template-columns:20px minmax(0,1fr);gap:9px;align-items:start}
   .rvwrong .k{
-    width:18px;height:18px;border-radius:5px;display:grid;place-items:center;
-    font-family:var(--font-mono);font-size:9.5px;font-weight:600;
+    min-width:20px;height:18px;padding:0 4px;box-sizing:border-box;
+    border-radius:5px;display:grid;place-items:center;
+    font-family:var(--font-mono);font-size:9.5px;font-weight:600;line-height:1;
     border:1px solid var(--line);color:var(--muted);background:var(--panel-2);
+    white-space:nowrap;
   }
   .rvwrong .wt{font-size:12.5px;line-height:1.55;color:var(--text-2);white-space:pre-wrap;word-break:break-word}
   .rvwrong p{font-size:12.5px;line-height:1.62;color:var(--muted);margin-top:4px}
@@ -1034,7 +1045,7 @@
   .rvtips .rvlbl{color:var(--warn);margin-bottom:5px}
   .rvtips .rvbul{color:var(--text-2)}
   .rvtips .rvbul li::before{background:color-mix(in srgb,var(--warn) 45%,transparent)}
-  .rvref{font-size:11.5px;line-height:1.6;color:var(--muted);max-width:68ch}
+  .rvref{font-size:11.5px;line-height:1.6;color:var(--muted);max-width:var(--read)}
   .rvref b{font-weight:600;color:var(--text-2)}
   .rvref a{color:var(--cool);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--cool) 35%,transparent)}
   .rvref a:hover{border-bottom-color:var(--cool)}
@@ -1066,7 +1077,7 @@
   .tip-line{
     margin-top:10px;color:var(--text-2);font-size:12.5px;line-height:1.6;
     display:flex;gap:7px;align-items:flex-start;background:var(--accent-soft);
-    padding:9px 12px;border-radius:8px;max-width:68ch;
+    padding:9px 12px;border-radius:8px;max-width:var(--read);
   }
   .tip-line .i{color:var(--accent);font-size:13px;margin-top:2px}
   details.qa .n.tip{color:var(--text-2);display:flex;gap:6px;align-items:flex-start}
@@ -1979,14 +1990,17 @@ function renderQuiz(rebuild) {
   const dom = DOMAIN_LABEL[quizDomain(q)];
   $("quizPillSection").textContent = "Trắc nghiệm";
   $("quizQ").innerHTML = fmtInlineRich(q.q);
+  // no blueprint %: the quiz is a practice pool, "enough questions" is the goal
   $("quizMeta").innerHTML =
-    `<span class="tag">${dom.short} ${dom.weight}%</span>` +
+    `<span class="tag">${dom.short} · ${dom.name}</span>` +
     (q.multi ? `<span class="tag">chọn ${q.correct.length}</span>` : "") +
-    `<span class="tag soft">${QUIZ_BANK.length} câu trong kho</span>`;
+    `<span class="tag soft">${QUIZ_BANK.length} câu</span>`;
 
   const opts = $("quizOpts");
+  // options are lettered A..E so the on-screen label always matches the answer
+  // key and the explanations ("Đáp án A và E"), with 1..5 kept as shortcuts
   opts.innerHTML = q.options.map((o, i) =>
-    `<button class="opt" data-i="${i}"><span class="k">${i + 1}</span><span>${fmtInlineRich(o)}</span></button>`
+    `<button class="opt" data-i="${i}"><span class="k">${letter(i)}</span><span>${fmtInlineRich(o)}</span></button>`
   ).join("");
   opts.querySelectorAll(".opt").forEach(b =>
     b.addEventListener("click", () => answerQuiz(Number(b.dataset.i))));
@@ -1995,8 +2009,8 @@ function renderQuiz(rebuild) {
   const checkBtn = $("quizCheck");
   if (checkBtn) checkBtn.hidden = !q.multi;
   $("quizFootNote").textContent = q.multi
-    ? `Chọn ${q.correct.length} đáp án rồi bấm Kiểm tra (phím 1–${q.options.length}, Enter để chấm)`
-    : `Chọn đáp án đúng (phím 1–${q.options.length})`;
+    ? `Chọn ${q.correct.length} đáp án rồi bấm Kiểm tra (bấm A–${letter(q.options.length - 1)} hoặc 1–${q.options.length})`
+    : `Chọn đáp án đúng (bấm A–${letter(q.options.length - 1)} hoặc 1–${q.options.length})`;
   updateQuizScore();
 }
 
@@ -2011,68 +2025,100 @@ function answerQuiz(i) {
     btns.forEach((b, j) => b.classList.toggle("sel", q.picked.has(j)));
     $("quizFootNote").textContent = q.picked.size
       ? `Đã chọn ${q.picked.size} / ${q.correct.length} — bấm Kiểm tra`
-      : `Chọn ${q.correct.length} đáp án rồi bấm Kiểm tra`;
-    return;
+      : `Chọn ${q.correct.length} đáp án rồi bấm Kiểm tra`;    return;
   }
   q.picked = new Set([i]);
   gradeQuiz();
 }
 
-/** Split a bank explanation into its parts. The bank writes them consistently:
-      Đáp án X là chính xác vì:
+/** Split a bank explanation into its parts.
+    The bank was written by several people, so it uses two shapes:
+
+    A (Vietnamese, 105 questions)
+      Đáp án A và E là chính xác vì:
       1. **Heading**: detail
          - sub detail
-      2. **Heading**: detail
       Sai:
-      A. why it is wrong
-      Tips:
-      - something to remember
-    So numbered items own the "-" lines that follow them. */
+      - **B, C:** why they are wrong
+      **Tips:** what to look for
+
+    B (English prose, 85 questions)
+      A sentence or two of reasoning, sometimes a "- GetItem: …" list.
+      Incorrect:
+      - A: why it is wrong
+
+    Both must render as the same three sections, otherwise B ends up as one
+    wall of text in which the lettered reasons are invisible. */
 function parseQuizExplanation(raw) {
   const out = { lead: "", reasons: [], wrong: [], tips: [], refs: [] };
   const lines = String(raw || "").replace(/\r/g, "").split("\n");
   let mode = "lead";
   let current = null;
 
-  const pushDetail = (text) => {
-    if (current) current.details.push(text);
-    else out.reasons.push({ title: "", details: [text] });
+  const closeReason = () => { current = null; };
+  const addReason = (title, detail) => {
+    current = { title: title || "", details: detail ? [detail] : [] };
+    out.reasons.push(current);
   };
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
     if (!line) continue;
 
-    if (/^Sai\s*:/i.test(line)) { mode = "wrong"; current = null; continue; }
-    if (/^Tips?\s*:/i.test(line)) { mode = "tips"; current = null; continue; }
-    if (/^Tham khảo\s*:/i.test(line)) { mode = "refs"; current = null; continue; }
+    // headers appear as "Sai:", "**Sai:**", "**Tips:**", "Incorrect:" — strip the
+    // bold markers on both sides before reading the label
+    const mk = line.replace(/^\*+/, "").match(/^(Sai|Incorrect|Wrong|Tips?|Trick|Mẹo|Tham khảo)\s*\**\s*[:：]\s*\**\s*(.*)$/i);
+    if (mk) {
+      const label = mk[1].toLowerCase();
+      const rest = mk[2].trim();
+      if (/^(sai|incorrect|wrong)$/.test(label)) { closeReason(); mode = "wrong"; continue; }
+      if (/^(tips?|trick|mẹo)$/.test(label)) {
+        closeReason();
+        mode = "tips";
+        if (rest) out.tips.push(rest.replace(/\*\*/g, ""));
+        continue;
+      }
+      if (label === "tham khảo") {
+        closeReason();
+        mode = "refs";
+        if (rest) out.refs.push(rest);
+        continue;
+      }
+    }
 
     if (mode === "wrong") {
-      const m = line.match(/^([A-E](?:\s*[,và]+\s*[A-E])*)\s*[.:]\s*(.+)$/i);
-      if (m) out.wrong.push({ letters: m[1].toUpperCase().replace(/[^A-E]/g, ""), why: m[2] });
-      else out.wrong.push({ letters: "", why: line });
+      // "- **B, C:** why" | "- B, C. why" | "B. why"
+      const cleaned = line.replace(/^[-•*]+\s*/, "").replace(/\*\*/g, "");
+      const m = cleaned.match(/^([A-E](?:\s*(?:[,/&]|và|and)\s*[A-E])*)\s*[.:：]-?\s*(.+)$/i);
+      if (m) out.wrong.push({ letters: m[1].toUpperCase().replace(/[^A-E]/g, ""), why: m[2].trim() });
+      else out.wrong.push({ letters: "", why: cleaned });
       continue;
     }
-    if (mode === "tips") { out.tips.push(line.replace(/^[-•]\s*/, "")); continue; }
-    if (mode === "refs") { out.refs.push(line); continue; }
+    if (mode === "tips") { out.tips.push(line.replace(/^[-•*]+\s*/, "").replace(/\*\*/g, "")); continue; }
+    if (mode === "refs") { out.refs.push(line.replace(/^[-•*]+\s*/, "")); continue; }
 
     // "1. **Title**: detail" or "1. plain reason"
     const numbered = line.match(/^\d+[.)]\s*(.+)$/);
     if (numbered) {
       const body = numbered[1];
       const head = body.match(/^\*\*(.+?)\*\*\s*[:：]?\s*([\s\S]*)$/);
-      current = head
-        ? { title: head[1].trim(), details: head[2] ? [head[2].trim()] : [] }
-        : { title: "", details: [body] };
-      out.reasons.push(current);
+      addReason(head ? head[1].trim() : "", head ? (head[2] || "").trim() : body);
       continue;
     }
-    if (/^[-•]\s+/.test(line)) {
-      pushDetail(line.replace(/^[-•]\s+/, ""));
+
+    if (/^[-•*]\s+/.test(line)) {
+      const body = line.replace(/^[-•*]+\s*/, "").trim();
+      // "- **Heading**: detail" opens a titled reason; "- plain detail" is a
+      // sub-point of that reason, or a list item of its own when none is open
+      const bold = body.match(/^\*\*(.+?)\*\*\s*[:：]?\s*(.*)$/);
+      if (bold) addReason(bold[1].trim(), bold[2].trim());
+      else if (current && current.title) current.details.push(body);
+      else addReason("", body);
       continue;
     }
-    if (current) { current.details.push(line); continue; }
-    out.lead = out.lead ? out.lead + " " + line : line;
+
+    if (current) current.details.push(line);
+    else out.lead = out.lead ? out.lead + " " + line : line;
   }
   return out;
 }
@@ -2112,25 +2158,28 @@ function gradeQuiz() {
   parts.push(`<div class="qansbox">${q.correct.map((i) =>
     `<p><b>${letter(i)}</b><span>${fmtInlineRich(q.options[i])}</span></p>`).join("")}</div>`);
 
-  if (exp.lead) {
-    parts.push(`<div class="qexsect"><p class="qlead">${fmtInline(exp.lead)}</p></div>`);
-  }
+  // "why" is one block: the lead-in sentence, then the reasons
+  const why = [];
+  if (exp.lead) why.push(`<p class="qlead">${fmtInline(exp.lead)}</p>`);
   if (exp.reasons.length) {
     const items = exp.reasons.map((r) => {
-      const head = r.title ? `<b class="qrt">${fmtInline(r.title)}</b>` : "";
       const body = r.details.filter(Boolean);
-      if (!head && body.length <= 1) return `<li><span>${fmtInline(body[0] || "")}</span></li>`;
-      return `<li>${head}${body.length
+      // a titled reason keeps its detail as a sub-list; a plain one is its own line
+      if (!r.title) return `<li><span>${fmtInline(body.join(" "))}</span></li>`;
+      return `<li><b class="qrt">${fmtInline(r.title)}</b>${body.length
         ? `<ul class="qrbul">${body.map((d) => `<li>${fmtInline(d)}</li>`).join("")}</ul>` : ""}</li>`;
     }).join("");
-    parts.push(`<div class="qexsect"><span class="rvlbl">Vì sao</span><ul class="rvbul qrlist">${items}</ul></div>`);
+    why.push(`<ul class="qrlist">${items}</ul>`);
+  }
+  if (why.length) {
+    parts.push(`<div class="qexsect"><span class="rvlbl">Vì sao</span>${why.join("")}</div>`);
   }
   if (exp.wrong.length) {
     const rows = exp.wrong.map((w) => {
       const lab = w.letters ? w.letters.split("").join(", ") : "–";
       return `<div class="qw"><span class="k">${lab}</span><div class="wt">${fmtInline(w.why)}</div></div>`;
     }).join("");
-    parts.push(`<details class="rvmore"><summary>Vì sao các phương án khác sai</summary>
+    parts.push(`<details class="rvmore"><summary>Vì sao các phương án còn lại không đúng</summary>
       <div class="rvwrong">${rows}</div></details>`);
   }
   if (exp.tips.length) {
@@ -3000,9 +3049,14 @@ function wire() {
     } else if (ui.mode === "quiz") {
       const q = ui.quiz;
       const max = q && q.options ? q.options.length : 5;
-      if (/^[1-6]$/.test(e.key) && Number(e.key) <= max) {
+      // A..E mirrors the visible letter on each option; 1..5 still works
+      const key = e.key.toUpperCase();
+      const byLetter = /^[A-E]$/.test(key) ? key.charCodeAt(0) - 65 : -1;
+      const byDigit = /^[1-6]$/.test(e.key) ? Number(e.key) - 1 : -1;
+      const idx = byLetter >= 0 ? byLetter : byDigit;
+      if (idx >= 0 && idx < max) {
         if (!q || q.answered) return;
-        answerQuiz(Number(e.key) - 1);
+        answerQuiz(idx);
         return;
       }
       if (e.key === "Enter") {
