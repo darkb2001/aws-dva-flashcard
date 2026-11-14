@@ -1,0 +1,8 @@
+raw/
+.DS_Store
+node_modules/
+*.local
+.env
+
+# Tài liệu gốc 43MB — không cần cho web, giữ ở máy
+*.pdf
