@@ -24,6 +24,7 @@ index.html            giao diện + toàn bộ logic (Học / Trắc nghiệm / 
 vercel.json           cấu hình deploy (cache + clean URLs)
 assets/*.woff2        font tự host (Bricolage, Be Vietnam Pro, JetBrains Mono) — chạy offline được
 data/s01.js … s18.js  564 flashcard theo 18 section
+data/quiz/bank.js     190 câu trắc nghiệm DVA (đáp án + giải thích + trick)
 data/exams/e01.js … e06.js   6 đề thi thử 65 câu (có đáp án + giải thích tiếng Việt)
 tools/crawl-cloudexam.mjs    crawler Cloud Exam Pro
 ```
@@ -95,6 +96,27 @@ Thanh **Domain** trong sidebar phân loại **từng thẻ** theo nội dung th�
 | TRB | ~19% | 22% | −3 |
 
 Vì sao không gán theo section: **IAM** nằm trong section EC2, **CloudWatch** nằm trong section Lambda — gán theo section sẽ đẩy DEV lên 56% và làm SEC/TRB chỉ còn 10%.
+
+### Kho trắc nghiệm (khác với đề thi thử)
+
+Ba kho **tách biệt**, đừng lẫn:
+
+| Kho | Dùng cho | Số câu | Nội dung |
+|---|---|---|---|
+| `data/s01–s18.js` | Học (flashcard) | 564 thẻ | câu hỏi mở + đáp án viết |
+| `data/quiz/bank.js` | **Trắc nghiệm** | 190 câu | 4–5 phương án thật, đáp án đúng, giải thích + trick |
+| `data/exams/e01–e06.js` | **Thi thử** | 390 câu | 6 đề × 65 câu, 150 phút |
+
+Trước đây chế độ Trắc nghiệm **mượn đáp án của thẻ khác làm phương án nhiễu**, nên phương án có thể phản đối chính câu hỏi và “đáp án đúng” thực ra là câu trả lời của một thẻ khác. Đã bỏ hẳn cách đó: trắc nghiệm giờ chỉ dùng câu hỏi có phương án và đáp án viết riêng cho nó.
+
+Nguồn bank: `main.dx407egisqiw0.amplifyapp.com/questions.json` (255 câu gốc, sau khử trùng còn 190). Mỗi câu có giải thích tiếng Việt ~850 ký tự; `tools/add-quiz-tricks.mjs` bổ sung thêm mục **Trick làm bài** dựa trên từ khoá quyết định trong đề (LEAST/MOST, cross-account, streaming, throttling…).
+
+```bash
+node tools/import-amplify-quiz.mjs /tmp/quiz-bank.json   # nạp lại bank
+node tools/add-quiz-tricks.mjs                           # thêm trick
+```
+
+Phân bổ domain trong bank: DEV 40% · SEC 27% · DEP 21% · TRB 12% (barem 30/26/22/22 — TRB còn thiếu).
 
 ### Chủ đề mới của C03 đã bổ sung
 
