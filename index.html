@@ -18,7 +18,7 @@
 <meta name="color-scheme" content="light dark" />
 <meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#14130F" media="(prefers-color-scheme: dark)" />
-<title>AWS DVA-C02 · Flashcard Ôn Thi</title>
+<title>AWS DVA-C03 · Flashcard Ôn Thi</title>
 <style>
   /* =========================================================
      AWS DVA-C02 — "desk" design system
@@ -323,6 +323,41 @@
   .deck .t{display:block;font-size:12.5px;line-height:1.3;font-weight:500;color:var(--text-2)}
   .deck.on .t{color:var(--text);font-weight:600}
   .deck .s{display:block;font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.01em;line-height:1.3}
+  .domstats{
+    display:flex;flex-direction:column;gap:11px;
+    padding:14px 2px 4px;margin-top:12px;border-top:1px solid var(--line);
+  }
+  .domrow{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .domhead{display:flex;align-items:baseline;gap:6px;min-width:0}
+  .domtag{
+    font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.06em;
+    color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 3px;
+    flex:0 0 auto;
+  }
+  .domname{
+    font-size:11px;color:var(--text-2);line-height:1.25;min-width:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1 1 auto;
+  }
+  .domnum{display:flex;align-items:baseline;gap:4px;flex:0 0 auto;font-family:var(--font-mono)}
+  .domnum b{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text)}
+  .domnum i{font-style:normal;font-size:9.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .dombar{position:relative;height:4px;border-radius:99px;background:var(--panel-2)}
+  .dombar i{
+    display:block;height:100%;background:var(--accent);border-radius:99px;
+    transform-origin:left;transition:transform .35s var(--ease);opacity:.85;
+  }
+  .dommark{
+    position:absolute;top:-2px;width:1.5px;height:8px;background:var(--text-2);
+    border-radius:1px;opacity:.55;transform:translateX(-.75px);
+  }
+  .domfoot{font-size:9.5px;color:var(--muted);font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+  .domgap{font-style:normal;color:var(--warn);margin-left:5px}
+  .dchip{
+    font-family:var(--font-mono);font-style:normal;font-size:9px;font-weight:600;
+    letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);
+    border-radius:4px;padding:0 3px;margin-left:6px;vertical-align:1px;
+    opacity:.85;
+  }
   .deck .pct{
     font-family:var(--font-mono);font-size:11px;color:var(--muted);
     font-variant-numeric:tabular-nums;letter-spacing:-.02em;
@@ -685,7 +720,7 @@
     .rv{padding:14px 13px}
     .rvh{gap:6px;margin-bottom:8px}
     .rvpick{margin-left:0;flex-basis:100%;order:9;padding-top:2px}
-    .rvq{font-size:13.5px;margin-bottom:11px}
+  .rvq{font-size:13.5px;margin-bottom:11px}
     .rvopt{padding:8px 9px;font-size:12.5px;gap:8px}
     .rvwhy{font-size:12px;padding-left:8px}
     .rvcode{font-size:10.5px;padding:7px 8px}
@@ -760,7 +795,25 @@
   }
   .exopt.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--text);box-shadow:inset 0 0 0 1px var(--accent)}
   .exopt.sel .k{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .codeblock{
+    font-family:var(--font-mono);font-size:11.5px;line-height:1.6;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;margin:8px 0;overflow-x:auto;color:var(--text-2);
+    white-space:pre;tab-size:2;max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  .codeblock code{font:inherit;background:none;border:0;padding:0;color:inherit}
+  .codeblock--inline{font-size:11px;line-height:1.5;padding:7px 9px;margin:6px 0 2px;border-radius:7px}
+  .codepill{
+    font-family:var(--font-mono);font-size:.92em;background:var(--panel-2);
+    border:1px solid var(--line);border-radius:4px;padding:.5px 4px;color:var(--text);
+    display:inline-block;max-width:100%;overflow-x:auto;vertical-align:bottom;
+    white-space:pre;
+  }
   .exopt .otext{white-space:pre-wrap;min-width:0;word-break:break-word}
+  .exopt .otext .codeblock{margin:6px 0 2px;font-size:11px}
+  .exopt .otext .codeblock--inline{white-space:pre-wrap;word-break:break-word}
+  .exopt .otext .codepill{white-space:pre-wrap;word-break:break-all}
   .exnav{display:flex;gap:8px;align-items:center;margin-top:24px;flex-wrap:wrap}
 
   .examsheet{
@@ -1104,7 +1157,7 @@
     <div class="brand">
       <div class="logo">AWS</div>
       <div>
-        <h1>DVA-C02 Flashcard</h1>
+        <h1>DVA-C03 Flashcard</h1>
         <p>16 section · ôn thi Developer Associate</p>
       </div>
       <button class="side-close" id="sideClose" title="Đóng menu (Esc)" aria-label="Đóng menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
@@ -1120,6 +1173,8 @@
       <div class="mini"><b id="statLearned">0</b><span>Đã thuộc</span></div>
       <div class="mini"><b id="statStreak">0</b><span>Chuỗi ngày</span></div>
     </div>
+
+    <div class="domstats" id="domStats" aria-label="Phân bổ theo domain DVA-C03"></div>
 
     <div class="filters" id="filters" role="group" aria-label="Lọc thẻ">
       <button class="chip on" data-filter="all" aria-pressed="true">Tất cả</button>
@@ -1223,7 +1278,7 @@
         <!-- Exam picker -->
         <div id="examPicker">
           <div class="listhead">
-            <h2>Thi thử DVA-C02</h2>
+            <h2>Thi thử DVA-C03</h2>
             <div class="pill" id="examTotalPill">6 đề · 390 câu</div>
             <div class="spacer"></div>
             <button class="ghost" id="examHistoryBtn">Lịch sử</button>
@@ -1350,6 +1405,8 @@
 <script src="data/s14.js"></script>
 <script src="data/s15.js"></script>
 <script src="data/s16.js"></script>
+<script src="data/s17.js"></script>
+<script src="data/s18.js"></script>
 <script src="data/exams/e01.js"></script>
 <script src="data/exams/e02.js"></script>
 <script src="data/exams/e03.js"></script>
@@ -1365,6 +1422,59 @@
    - Progress in localStorage
    ========================================================= */
 const SECTIONS = (window.DVA_SECTIONS || []).filter(Boolean);
+
+/* DVA-C03 domains. Weightings: Development 30%, Security 26%,
+   Testing and Deployment 22%, Troubleshooting and Optimization 22%.
+   A section is not a domain — IAM cards live inside the EC2 section, monitoring
+   cards inside Lambda — so each card is classified by what it actually covers. */
+const DOMAINS = {
+  s01: "dev", s02: "dev", s03: "dev", s04: "dev", s05: "sec",
+  s06: "dep", s07: "dev", s08: "dep", s09: "dev", s10: "trb",
+  s11: "dev", s12: "dev", s13: "dev", s14: "dep", s15: "dep",
+  s16: "sec", s17: "dev", s18: "trb",
+};
+const DOMAIN_LABEL = {
+  dev: { short: "DEV", name: "Development with AWS Services", weight: 30 },
+  sec: { short: "SEC", name: "Security", weight: 26 },
+  dep: { short: "DEP", name: "Testing and Deployment", weight: 22 },
+  trb: { short: "TRB", name: "Troubleshooting and Optimization", weight: 22 },
+};
+
+const DOMAIN_RULES = {
+  trb: [/throttl/i, /timeout/i, /troubleshoot/i, /debug/i, /latency/i, /cold ?start/i,
+    /retry/i, /metric/i, /alarm/i, /x-ray/i, /logs? insights/i, /optimiz/i, /performance/i,
+    /concurren/i, /bottleneck/i, /backlog/i, /hot (?:shard|partition)/i, /p50|p99/i,
+    /drift/i, /cache miss|invalidat/i],
+  sec: [/\bIAM\b/, /\bKMS\b/, /encrypt/i, /\bSTS\b/, /cognito/i, /secrets manager/i,
+    /parameter store/i, /\bWAF\b/, /policy/i, /permission/i, /least privilege/i, /mfa/i,
+    /credential/i, /\bTLS\b|certificate|\bACM\b/, /presign/i, /guardrail/i,
+    /prompt injection/i, /\bPII\b/, /assume ?role/i, /trust policy/i, /access control/i,
+    /authoriz/i, /authentic/i, /privatelink|vpc endpoint/i],
+  dep: [/cloudformation/i, /\bCDK\b/, /\bSAM\b/, /beanstalk/i,
+    /codepipeline|codebuild|codedeploy|codecommit|codeartifact/i, /deploy/i, /pipeline/i,
+    /buildspec|appspec/i, /docker|\bECR\b|\bECS\b|\bEKS\b|fargate/i,
+    /unit test|integration test|mock/i, /blue.?green|canary|rolling/i, /rollback/i,
+    /stack ?(?:set|policy)/i, /nested stack/i, /change ?set/i],
+  dev: [/lambda/i, /dynamodb/i, /\bS3\b/, /api gateway/i, /\bSQS\b/, /\bSNS\b/,
+    /eventbridge/i, /step functions/i, /kinesis/i, /appsync/i,
+    /\bRDS\b|aurora|elasticache/i, /cloudfront|route ?53/i, /bedrock/i,
+    /amazon q|kiro/i, /\bSDK\b/i, /idempoten/i, /appconfig/i],
+};
+
+/** Classify one card by the domain whose vocabulary it actually uses. */
+function cardDomain(item) {
+  const text = (item.card.q || "") + " " + (item.card.a || "") + " " + (item.card.chapter || "");
+  let best = DOMAINS[item.sid] || "dev";
+  let bestScore = 0;
+  Object.keys(DOMAIN_RULES).forEach((key) => {
+    let score = 0;
+    DOMAIN_RULES[key].forEach((re) => { if (re.test(text)) score++; });
+    if (score > bestScore) { bestScore = score; best = key; }
+  });
+  return best;
+}
+
+function sectionDomain(sec) { return DOMAINS[sec.id] || "dev"; }
 
 const DAY = 86400000;
 const LEVEL_DAYS = [0, 1, 2, 4, 8, 16, 35]; // interval per level
@@ -1524,6 +1634,38 @@ function updateStats() {
   document.getElementById("statStreak").textContent = store.stats.streak || 0;
   const st = store.stats;
   document.getElementById("pillStats").textContent = st.right + " đúng · " + st.wrong + " sai";
+  renderDomainStats(all);
+}
+
+/** Show how the bank is split across the DVA-C03 domains, next to the official weight. */
+function renderDomainStats(all) {
+  const box = document.getElementById("domStats");
+  if (!box) return;
+  const buckets = { dev: [], sec: [], dep: [], trb: [] };
+  all.forEach((x) => { buckets[cardDomain(x)].push(x); });
+
+  const total = all.length || 1;
+  box.innerHTML = Object.entries(DOMAIN_LABEL).map(([key, meta]) => {
+    const list = buckets[key];
+    const share = Math.round((list.length / total) * 100);
+    const learned = list.filter((x) => peekState(x.sid, x.idx).lvl >= 3).length;
+    const done = list.length ? Math.round((learned / list.length) * 100) : 0;
+    const gap = meta.weight - share;
+    const note = gap >= 6 ? `<em class="domgap">thiếu ${gap}%</em>` : "";
+    return `<div class="domrow" title="${meta.name} — barem thi ${meta.weight}%">
+      <div class="domhead">
+        <span class="domtag">${meta.short}</span>
+        <span class="domname">${meta.name}</span>
+        <span class="domnum"><b>${share}%</b><i>/${meta.weight}%</i></span>
+      </div>
+      <div class="dombar" role="img"
+        aria-label="${meta.short}: ${share}% số thẻ so với barem ${meta.weight}%, đã thuộc ${done}%">
+        <i style="transform:scaleX(${Math.min(share, 100) / 100})"></i>
+        <b class="dommark" style="left:${Math.min(meta.weight, 100)}%"></b>
+      </div>
+      <div class="domfoot">${list.length} thẻ · thuộc ${learned}${note}</div>
+    </div>`;
+  }).join("");
 }
 
 /* ---------- render sidebar ---------- */
@@ -1542,7 +1684,7 @@ function renderDecks() {
       <span class="num">${sec.num}</span>
       <span>
         <span class="t">${escapeHtml(sec.title)}${due ? '<span class="dot"></span>' : ""}</span>
-        <span class="s">${p.learned}/${p.total} đã thuộc</span>
+        <span class="s">${p.learned}/${p.total} đã thuộc<em class="dchip">${DOMAIN_LABEL[sectionDomain(sec)].short}</em></span>
       </span>
       <span class="pct">${due ? due + "↻" : Math.round(100 * p.learned / p.total) + "%"}</span>
     </button>`;
@@ -1624,12 +1766,10 @@ function renderStudy() {
   $("frontTags").innerHTML = tags + (st.star ? starTag : "");
   $("backTags").innerHTML = tags + (c.tip ? '<span class="tag tip">Exam tip</span>' : "") + (st.star ? starTag : "");
 
-  $("frontQ").innerHTML = escapeHtml(c.q).replace(/\n/g, "<br>") +
+  $("frontQ").innerHTML = fmtInlineRich(c.q) +
     (c.sub ? `<small>${escapeHtml(c.sub)}</small>` : "");
 
-  let ans = escapeHtml(c.a);
-  ans = ans.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-  $("backA").innerHTML = ans;
+  $("backA").innerHTML = fmtRich(c.a);
 
   const noteEl = $("backNote");
   const noteParts = [];
@@ -1749,12 +1889,12 @@ function renderQuiz(rebuild) {
   const q = ui.quiz;
   if (!q) return;
   $("quizPillSection").textContent = "Section " + q.sec.num + " · " + (q.card.chapter || q.sec.title);
-  $("quizQ").textContent = q.card.q;
+  $("quizQ").innerHTML = fmtInlineRich(q.card.q);
   $("quizMeta").innerHTML = `<span class="tag">S${q.sec.num}</span>` +
     (q.card.chapter ? `<span class="tag">${escapeHtml(q.card.chapter)}</span>` : "");
   const opts = $("quizOpts");
   opts.innerHTML = q.options.map((o, i) =>
-    `<button class="opt" data-i="${i}"><span class="k">${i + 1}</span><span>${escapeHtml(o)}</span></button>`
+    `<button class="opt" data-i="${i}"><span class="k">${i + 1}</span><span>${fmtInlineRich(o)}</span></button>`
   ).join("");
   opts.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => answerQuiz(Number(b.dataset.i))));
   $("quizExplain").classList.remove("on");
@@ -1768,7 +1908,10 @@ function firstLine(a) {
   return String(a || "").replace(/\*\*/g, "").trim().split("\n")[0].trim();
 }
 function quizAnswerOf(card) {
-  const raw = String(card.a || "").replace(/\*\*/g, "").trim();
+  const raw = String(card.a || "")
+    .replace(/```[a-z]*\n?/gi, "")      // fence markers are layout, not content
+    .replace(/\*\*/g, "")
+    .trim();
   const lines = raw.split("\n").map(s => s.trim()).filter(Boolean);
   let out = lines[0] || "";
   if (out.length < 30 && lines[1] && lines[1].length + out.length < 150) out += " " + lines[1];
@@ -1902,10 +2045,9 @@ function renderList() {
       <h3>Section ${sec.num} · ${escapeHtml(sec.title)} — ${p.learned}/${p.total}</h3>
       ${grouped[sec.id].map(x => {
         const st = peekState(x.sid, x.idx);
-        const a = escapeHtml(x.card.a).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
         return `<details class="qa">
           <summary>${highlight(x.card.q)} ${st.star ? `<span class="star-mark" aria-label="đã ghim">${ICON_STAR_FILL}</span>` : ""}</summary>
-          <div class="ans">${a}</div>
+          <div class="ans">${fmtRich(x.card.a)}</div>
           ${x.card.note ? `<div class="n">${highlight(x.card.note)}</div>` : ""}
           ${x.card.tip ? `<div class="n tip">${highlight(x.card.tip)}</div>` : ""}
         </details>`;
@@ -2095,7 +2237,7 @@ function renderExamQ() {
 
   $("examQNum").textContent = `Câu ${exam.pos + 1} / ${s.questions.length}`;
   $("examQType").hidden = !multi;
-  $("examQText").textContent = q.q;
+  $("examQText").innerHTML = fmtInlineRich(q.q);
   $("examFlagBtn").innerHTML = exam.flags[exam.pos] ? ICON_FLAG_FILL : ICON_FLAG;
   $("examFlagBtn").classList.toggle("on", exam.flags[exam.pos]);
 
@@ -2103,7 +2245,7 @@ function renderExamQ() {
   $("examOpts").innerHTML = q.options.map((o, i) => {
     const on = picked.has(i);
     return `<button class="exopt${on ? " sel" : ""}" data-opt="${i}">
-      <span class="k">${letter(i)}</span><span class="otext">${escapeHtml(o)}</span>
+      <span class="k">${letter(i)}</span><span class="otext">${fmtInlineRich(o)}</span>
     </button>`;
   }).join("");
 
@@ -2330,6 +2472,54 @@ function fmtInline(text) {
     .replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>");
 }
 
+/** Format code from the crawl: fenced blocks become <pre>, `inline` becomes <code>,
+    **bold** becomes bold. Used everywhere a crawled answer or option is displayed. */
+function fmtRich(text) {
+  const src = String(text == null ? "" : text);
+  const out = [];
+  const fence = /```([\s\S]*?)```/g;
+  let last = 0;
+  let m;
+  while ((m = fence.exec(src)) !== null) {
+    if (m.index > last) out.push({ kind: "prose", text: src.slice(last, m.index) });
+    out.push({ kind: "code", text: m[1].replace(/^\n+|\n+$/g, "") });
+    last = m.index + m[0].length;
+  }
+  if (last < src.length) out.push({ kind: "prose", text: src.slice(last) });
+
+  return out.map((part) => {
+    if (part.kind === "code") {
+      return `<pre class="codeblock"><code>${escapeHtml(part.text)}</code></pre>`;
+    }
+    const prose = part.text.trim();
+    if (!prose) return "";
+    return fmtInline(prose).replace(/\n/g, "<br>");
+  }).join("");
+}
+
+/** Same, but stays inline (no <pre>) — for one-line slots like an option label. */
+function fmtInlineRich(text) {
+  const out = [];
+  const fence = /```([\s\S]*?)```/g;
+  let last = 0;
+  let m;
+  while ((m = fence.exec(String(text == null ? "" : text))) !== null) {
+    if (m.index > last) out.push(fmtInline(text.slice(last, m.index)).replace(/\n/g, "<br>"));
+    const code = m[1].replace(/^\n+|\n+$/g, "");
+    // a trailing newline before the snippet already produced <br>; the block's own
+    // margin is the spacing we want, so drop the redundant break
+    if (out.length) out[out.length - 1] = out[out.length - 1].replace(/(<br>\s*)+$/, "");
+    // a multi-line snippet would destroy the line rhythm of a label — give it a block
+    out.push(code.includes("\n")
+      ? `<pre class="codeblock codeblock--inline"><code>${escapeHtml(code)}</code></pre>`
+      : `<code class="codepill">${escapeHtml(code)}</code>`);
+    last = m.index + m[0].length;
+  }
+  const tail = String(text == null ? "" : text).slice(last);
+  if (tail) out.push(fmtInline(tail).replace(/\n/g, "<br>"));
+  return out.join("");
+}
+
 /** References arrive as "Title · https://…" — link the URL, keep the label short. */
 function formatRef(text) {
   return String(text).split(/\s*·\s*/).map((chunk) => {
@@ -2392,7 +2582,7 @@ function renderReviewItem(d, q) {
     const why = (isRight || isPicked) && whyByOption[oi] ? whyBlock(whyByOption[oi]) : "";
     return `<div class="${c}">
       <span class="k">${letter(oi)}</span>
-      <div class="t">${escapeHtml(o)}${why ? `<div class="rvwhy">${why}</div>` : ""}</div>
+      <div class="t">${fmtInlineRich(o)}${why ? `<div class="rvwhy">${why}</div>` : ""}</div>
       <span class="badge">${badge}</span>
     </div>`;
   }).join("");
@@ -2402,7 +2592,7 @@ function renderReviewItem(d, q) {
   q.options.forEach((o, oi) => {
     if (d.want.includes(oi) || d.picked.includes(oi)) return;
     if (!whyByOption[oi]) return;
-    leftover.push(`<div class="w"><span class="k">${letter(oi)}</span><div><div class="wt">${escapeHtml(o)}</div>${whyBlock(whyByOption[oi])}</div></div>`);
+    leftover.push(`<div class="w"><span class="k">${letter(oi)}</span><div><div class="wt">${fmtInlineRich(o)}</div>${whyBlock(whyByOption[oi])}</div></div>`);
   });
   strayWrong.forEach((w) => {
     leftover.push(`<div class="w"><span class="k">–</span><div><div class="wt">${escapeHtml(w.text)}</div>${whyBlock(w.why)}</div></div>`);
@@ -2431,7 +2621,7 @@ function renderReviewItem(d, q) {
       ${q.multi ? '<span class="rvtag soft">nhiều đáp án</span>' : ""}
       <span class="rvpick">${pick}</span>
     </div>
-    <div class="rvq">${escapeHtml(q.q)}</div>
+    <div class="rvq">${fmtInlineRich(q.q)}</div>
     <div class="rvopts">${opts}</div>
     ${notes.length ? `<div class="rvnotes">${notes.join("")}</div>` : ""}
   </article>`;

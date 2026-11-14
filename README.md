@@ -1,6 +1,8 @@
-# AWS DVA-C02 · Flashcard & Thi thử
+# AWS DVA-C03 · Flashcard & Thi thử
 
-Ứng dụng HTML tĩnh: 526 flashcard (16 section) + **6 đề thi thử** (390 câu) crawl từ Cloud Exam Pro.
+Ứng dụng HTML tĩnh: **564 flashcard (18 section)** + **6 đề thi thử** (390 câu) crawl từ Cloud Exam Pro.
+
+Lộ trình học bám theo **DVA-C03** (hiệu lực từ 01/12/2026), nhưng vẫn dùng được để thi **DVA-C02** vì nền tảng dịch vụ gần như trùng nhau.
 
 Không backend, không tài khoản: **mọi tiến độ lưu trong `localStorage` của trình duyệt người dùng**, nên ai mở web cũng có phiên riêng của mình.
 
@@ -21,7 +23,7 @@ Mở trực tiếp bằng `file://` vẫn chạy, nhưng nên dùng server để
 index.html            giao diện + toàn bộ logic (Học / Trắc nghiệm / Thi thử / Danh sách)
 vercel.json           cấu hình deploy (cache + clean URLs)
 assets/*.woff2        font tự host (Bricolage, Be Vietnam Pro, JetBrains Mono) — chạy offline được
-data/s01.js … s16.js  526 flashcard theo 16 section
+data/s01.js … s18.js  564 flashcard theo 18 section
 data/exams/e01.js … e06.js   6 đề thi thử 65 câu (có đáp án + giải thích tiếng Việt)
 tools/crawl-cloudexam.mjs    crawler Cloud Exam Pro
 ```
@@ -63,17 +65,48 @@ vercel --prod
 
 ## Chế độ Thi thử
 
-- 6 đề × 65 câu, 150 phút, điểm đạt 72%
+- 6 đề × 65 câu, **150 phút** (130 phút chuẩn + 30 phút hỗ trợ ESL cho thí sinh không phải bản ngữ), điểm đạt 72%
 - Đồng hồ đếm ngược, đánh dấu câu (phím `F`), bảng điều hướng câu hỏi (thu gọn được trên mobile)
 - Câu nhiều đáp án được nhận diện tự động
 - Nộp bài → điểm %, đúng/sai/bỏ trống, xem lại từng câu kèm giải thích
 
-## Đối chiếu đề cương DVA-C02
+## Đối chiếu đề cương DVA-C03
 
-Domain trọng số: Development 32% · Security 26% · Deployment 24% · Troubleshooting 18%.
-Các service in-scope **không có trong PDF gốc** đã được bổ sung thành thẻ riêng: **AWS AppConfig** (15 thẻ, cũng là 7 câu trong đề thi thử), **CloudShell** (4), **Amazon Q Developer** (4).
-Section 15 (Deployment) tăng từ 22 → 57 thẻ để cân với trọng số 24%.
-- Lịch sử các lần thi lưu trong `localStorage`
+Barem chính thức (hiệu lực 01/12/2026):
+
+| Domain | Trọng số | ≈ số câu /50 |
+|---|---|---|
+| 1. Development with AWS Services | **30%** | 15 |
+| 2. Security | **26%** | 13 |
+| 3. Testing and Deployment | **22%** | 11 |
+| 4. Troubleshooting and Optimization | **22%** | 11 |
+
+Domain 4 tăng từ **18% (C02) → 22% (C03)**; phần AI được thêm vào cả 3 domain đầu.
+
+### Phân bổ thẻ hiện tại
+
+Thanh **Domain** trong sidebar phân loại **từng thẻ** theo nội dung thực tế (không theo section) và so với barem:
+
+| Domain | Tỷ lệ thẻ | Barem | Chênh |
+|---|---|---|---|
+| DEV | ~35% | 30% | +5 |
+| SEC | ~25% | 26% | −1 |
+| DEP | ~21% | 22% | −1 |
+| TRB | ~19% | 22% | −3 |
+
+Vì sao không gán theo section: **IAM** nằm trong section EC2, **CloudWatch** nằm trong section Lambda — gán theo section sẽ đẩy DEV lên 56% và làm SEC/TRB chỉ còn 10%.
+
+### Chủ đề mới của C03 đã bổ sung
+
+- **Section 17 — AI-assisted Development & AI Security** (16 thẻ): Amazon Q Developer, Kiro, CodeGuru, AI-assisted testing/CI-CD, **Amazon Bedrock** (InvokeModel, Converse, Knowledge Bases, Agents, Guardrails, Provisioned Throughput), **Bedrock AgentCore**, **AI Security** (prompt injection, PII masking, agent permissions, human-in-the-loop).
+- **Section 18 — Troubleshooting & Optimization Deep Dive** (22 thẻ): Lambda throttling/cold start/SnapStart/Power Tuning, SQS visibility & long polling, Kinesis hot shard, DynamoDB throttling & consistency, DAX, ElastiCache, CloudFront invalidation, metric filter & Logs Insights, X-Ray.
+- **Dịch vụ đã có sẵn từ trước**: AppConfig (15 thẻ), CloudShell (4), PrivateLink (5), Data Firehose (10), Amazon Q (4).
+
+### Ghi chú phạm vi
+
+- Bedrock/AgentCore chỉ ở mức **khái niệm và kiểm soát quyền** — AWS **không** yêu cầu thiết kế RAG hay prompt engineering chuyên sâu.
+- Section 15 (Deployment) đã tăng 22 → 57 thẻ để cân với trọng số Deployment.
+- Lịch sử các lần thi lưu trong `localStorage` (`dva-exam-history-v1`, 40 lượt gần nhất).
 
 Phím tắt khi thi: `←`/`→` chuyển câu, `1`–`5` chọn đáp án, `F` đánh dấu.
 
