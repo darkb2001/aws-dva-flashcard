@@ -1338,7 +1338,7 @@
             <div class="opts" id="quizOpts"></div>
             <div class="explain" id="quizExplain"></div>
             <div class="quizfoot">
-              <button class="ctl primary" id="quizCheck" hidden>Kiểm tra</button>
+              <button class="ctl primary" id="quizCheck" disabled>Kiểm tra đáp án</button>
               <button class="ctl" id="quizNext">Câu tiếp<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
               <button class="ctl" id="quizSkip">Bỏ qua</button>
               <div class="spacer"></div>
@@ -2033,29 +2033,52 @@ function renderQuiz(rebuild) {
     b.addEventListener("click", () => answerQuiz(Number(b.dataset.i))));
   $("quizExplain").classList.remove("on");
   $("quizExplain").innerHTML = "";
-  const checkBtn = $("quizCheck");
-  if (checkBtn) checkBtn.hidden = !q.multi;
-  $("quizFootNote").textContent = q.multi
-    ? `Chọn ${q.correct.length} đáp án rồi bấm Kiểm tra (bấm A–${letter(q.options.length - 1)} hoặc 1–${q.options.length})`
-    : `Chọn đáp án đúng (bấm A–${letter(q.options.length - 1)} hoặc 1–${q.options.length})`;
+  // every question is graded by the same button, so a single-answer pick can
+  // still be changed before it is submitted
+  $("quizCheck").hidden = false;
+  syncQuizPicks();
   updateQuizScore();
+}
+
+/** Keep the check button and the footnote in step with what is picked. The
+    button stays visible but disabled until something is chosen, which is how
+    the source quiz behaves: nothing is graded until you press it. */
+function syncQuizPicks() {
+  const q = ui.quiz;
+  if (!q) return;
+  const check = $("quizCheck");
+  const next = $("quizNext");
+
+  // graded: the submit button is gone and "Câu tiếp" becomes the primary action
+  check.hidden = q.answered;
+  check.disabled = q.picked.size === 0;
+  check.classList.toggle("primary", !q.answered && q.picked.size > 0);
+  check.textContent = "Kiểm tra đáp án";
+  next.classList.toggle("primary", q.answered);
+
+  if (q.answered) return;
+  $("quizOpts").querySelectorAll(".opt").forEach((b, j) =>
+    b.classList.toggle("sel", q.picked.has(j)));
+
+  const keys = `A–${letter(q.options.length - 1)} hoặc 1–${q.options.length}`;
+  const need = q.correct.length > 1 ? `chọn ${q.correct.length} đáp án` : "chọn 1 đáp án";
+  $("quizFootNote").textContent = q.picked.size
+    ? `Đã chọn ${q.picked.size}${q.correct.length > 1 ? " / " + q.correct.length : ""} — bấm Kiểm tra để chấm`
+    : `${need[0].toUpperCase() + need.slice(1)}, rồi bấm Kiểm tra (${keys}, Enter để chấm)`;
 }
 
 function answerQuiz(i) {
   const q = ui.quiz;
   if (!q || q.answered) return;
 
-  // multi-answer questions collect picks first, then confirm
+  // picks are always changeable until the answer is submitted
   if (q.multi) {
     if (q.picked.has(i)) q.picked.delete(i); else q.picked.add(i);
-    const btns = $("quizOpts").querySelectorAll(".opt");
-    btns.forEach((b, j) => b.classList.toggle("sel", q.picked.has(j)));
-    $("quizFootNote").textContent = q.picked.size
-      ? `Đã chọn ${q.picked.size} / ${q.correct.length} — bấm Kiểm tra`
-      : `Chọn ${q.correct.length} đáp án rồi bấm Kiểm tra`;    return;
+  } else {
+    // single answer behaves like a radio: picking another moves the selection
+    q.picked = new Set([i]);
   }
-  q.picked = new Set([i]);
-  gradeQuiz();
+  syncQuizPicks();
 }
 
 /** Split a bank explanation into its parts.
@@ -2177,6 +2200,8 @@ function gradeQuiz() {
   $("quizFootNote").innerHTML = right
     ? `<span class="fb ok">${ICON_CHECK} Chính xác</span>`
     : `<span class="fb no">${ICON_CROSS} Chưa đúng — đọc phần Trick bên dưới</span>`;
+  // the button turns into a plain "next" affordance once the question is graded
+  syncQuizPicks();
 
   const exp = parseQuizExplanation(q.explanation);
   const parts = [];
@@ -3092,7 +3117,8 @@ function wire() {
       }
       if (e.key === "Enter") {
         e.preventDefault();
-        if (q && q.multi && !q.answered) gradeQuiz();
+        // Enter submits the visible answer; once graded it moves on
+        if (q && !q.answered) gradeQuiz();
         else nextQuiz();
         return;
       }
