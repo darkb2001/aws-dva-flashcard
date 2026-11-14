@@ -109,7 +109,17 @@ Ba kho **tách biệt**, đừng lẫn:
 
 Trước đây chế độ Trắc nghiệm **mượn đáp án của thẻ khác làm phương án nhiễu**, nên phương án có thể phản đối chính câu hỏi và “đáp án đúng” thực ra là câu trả lời của một thẻ khác. Đã bỏ hẳn cách đó: trắc nghiệm giờ chỉ dùng câu hỏi có phương án và đáp án viết riêng cho nó.
 
-Nguồn bank: `main.dx407egisqiw0.amplifyapp.com/questions.json`. File gốc có **255 dòng nhưng chỉ 190 câu**: 65 dòng là bản sao của cùng một câu, mỗi câu xuất hiện 2 lần (một lần id `qN` giải thích ngắn, một lần id số giải thích dài). Importer giữ bản giải thích đầy đủ hơn, nên **không mất câu nào** — đã đối chiếu: 190 khoá stem duy nhất ở nguồn, 190 câu trong bank.
+Nguồn bank: `main.dx407egisqiw0.amplifyapp.com/questions.json`. File gốc có **255 dòng nhưng chỉ 190 câu**: 65 dòng là bản sao của cùng một câu. Không mất câu nào — 255 dòng gộp lại đúng 190 câu hỏi khác nhau.
+
+```
+127 câu xuất hiện 1 lần        = 127
+ 61 câu xuất hiện 2 lần  (×2)  = 122
+  2 câu xuất hiện 3 lần  (×3)  =   6
+                                 ----
+                                 255 dòng  →  190 câu
+```
+
+Bản sao gần như luôn giống hệt: 62/63 nhóm trùng **cùng đề bài từng ký tự**, 63/63 nhóm cùng đáp án, 62/63 nhóm cùng phương án (nhóm lệch chỉ khác dấu chấm cuối câu). Khác biệt nằm ở phần giải thích, nên mỗi câu có 2 bản: một bản id `qN` giải thích ngắn, một bản id số giải thích dài hơn. Importer so cả stem và **giữ bản giải thích dài hơn** — không phải bản xuất hiện trước.
 
 `tools/add-quiz-tricks.mjs` bổ sung mục **Trick làm bài** cho những câu chưa có (nguồn đã có `**Tips:**` ở 105 câu). Trick lấy từ từ khoá quyết định trong đề: LEAST/MOST, cross-account, streaming, throttling, cold start, GSI hot partition…
 
