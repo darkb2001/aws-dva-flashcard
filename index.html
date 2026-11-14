@@ -1107,8 +1107,21 @@
       position:fixed;inset:0 auto 0 0;width:min(300px,84vw);z-index:40;
       transform:translateX(-100%);transition:transform .26s var(--ease),opacity .2s;
       box-shadow:var(--shadow);background:var(--bg-soft);
+      /* the whole panel scrolls, not just the deck list squeezed into 206px:
+         a swipe starting on the brand or the stats used to fall through to the
+         page behind. overscroll-behavior stops that chaining at the edges. */
+      overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
     }
     .sidebar.open{transform:none}
+    /* one scroll container on mobile — the inner list must not fight the panel */
+    .sidebar .deck-list{overflow:visible;flex:0 0 auto;min-height:auto}
+    /* the page behind is frozen while the drawer is open, so a stray swipe on
+       the backdrop cannot move the content under it. .examsheet is sticky and
+       scrolls on its own, so it needs the same treatment. */
+    .app.nav-open .views{overflow:hidden}
+    .app.nav-open .examsheet{overflow:hidden}
+    .app.nav-open .topbar{pointer-events:none}
+    .scrim{overscroll-behavior:contain;touch-action:none}
     .side-close{display:grid;border-color:var(--line)}
     .menu{display:grid}
 
@@ -2931,6 +2944,7 @@ function closeSidebar() {
   $("sidebar").classList.remove("open");
   $("scrim").classList.remove("on");
   $("app").classList.add("nav-collapsed");
+  $("app").classList.remove("nav-open");
   syncNavBtn();
 }
 function openSidebar() {
@@ -2938,6 +2952,9 @@ function openSidebar() {
   if (isMobile()) {
     $("sidebar").classList.add("open");
     $("scrim").classList.add("on");
+    // freeze the page behind the drawer, otherwise a swipe that starts on the
+    // backdrop scrolls the content the drawer is covering
+    $("app").classList.add("nav-open");
   }
   syncNavBtn();
 }
