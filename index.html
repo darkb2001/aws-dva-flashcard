@@ -658,6 +658,12 @@
     font-variant-numeric:tabular-nums;
   }
   .resume-actions{display:flex;gap:8px;flex:0 0 auto}
+  @media (max-width:560px){
+    .resume{padding:12px 13px;gap:11px;margin:-6px 0 16px}
+    .resume-txt{flex:1 1 100%}
+    .resume-actions{flex:1 1 100%}
+    .resume-actions .ctl,.resume-actions .ghost{flex:1 1 0;justify-content:center}
+  }
 
   .examrunner{display:flex;flex-direction:column;gap:16px}
   .exambar{
@@ -1274,17 +1280,24 @@ function save() {
 }
 /* The reading session: where this person left off, on this browser only. */
 let uiSaveTimer = null;
+function writeUi() {
+  try {
+    localStorage.setItem(UI_KEY, JSON.stringify({
+      mode: ui.mode, sectionId: ui.sectionId, filter: ui.filter,
+      query: ui.query, shuffled: ui.shuffled, pos: ui.pos, flipped: ui.flipped,
+      at: Date.now(),
+    }));
+  } catch (e) {}
+}
 function saveUi() {
   clearTimeout(uiSaveTimer);
-  uiSaveTimer = setTimeout(() => {
-    try {
-      localStorage.setItem(UI_KEY, JSON.stringify({
-        mode: ui.mode, sectionId: ui.sectionId, filter: ui.filter,
-        query: ui.query, shuffled: ui.shuffled, pos: ui.pos, flipped: ui.flipped,
-        at: Date.now(),
-      }));
-    } catch (e) {}
-  }, 200);
+  uiSaveTimer = setTimeout(writeUi, 200);
+}
+function flushUi() {
+  if (!uiSaveTimer) return;
+  clearTimeout(uiSaveTimer);
+  uiSaveTimer = null;
+  writeUi();
 }
 function restoreUi() {
   let saved = null;
@@ -2229,6 +2242,9 @@ function wire() {
     save(); ui.pos = 0; ui.flipped = false; ui.quizScore = { right: 0, total: 0 };
     renderAll(); toast("Đã reset tiến độ");
   });
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushUi(); });
+  window.addEventListener("pagehide", flushUi);
+
   $("menuBtn").addEventListener("click", e => { e.stopPropagation(); toggleSidebar(); });
   $("sideClose").addEventListener("click", closeSidebar);
   $("scrim").addEventListener("click", closeSidebar);
