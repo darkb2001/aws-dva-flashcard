@@ -19,7 +19,7 @@
 <meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#14130F" media="(prefers-color-scheme: dark)" />
 <title>AWS DVA-C03 · Flashcard Ôn Thi</title>
-<meta name="description" content="564 flashcard, 190 câu trắc nghiệm và 6 đề thi thử 150 phút cho kỳ thi AWS Certified Developer – Associate (DVA-C03)." />
+<meta name="description" data-i18n-content="doc.desc" content="564 flashcard, 190 câu trắc nghiệm và 6 đề thi thử 150 phút cho kỳ thi AWS Certified Developer – Associate (DVA-C03)." />
 <link rel="icon" href="assets/favicon.ico" sizes="any" />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32" />
@@ -391,6 +391,26 @@
   .ghost:hover{color:var(--text);border-color:var(--line-strong);background:var(--panel)}
   .ghost .i{font-size:13px}
 
+  /* ---------- Language switch ---------- */
+  /* A two-position segmented control: the selected half is filled, so the
+     current language is readable at a glance without a label. */
+  .langswitch{
+    display:inline-flex;align-items:center;gap:2px;padding:2px;
+    border:1px solid var(--line);border-radius:9px;background:var(--panel);
+    position:relative;z-index:1;
+  }
+  .langswitch button{
+    font:inherit;font-size:11.5px;font-weight:700;letter-spacing:.04em;
+    padding:5px 10px;border-radius:7px;border:0;background:transparent;
+    color:var(--muted);cursor:pointer;transition:var(--dur) var(--ease);
+    line-height:1.2;
+  }
+  .langswitch button:hover{color:var(--text)}
+  .langswitch button.on{
+    background:var(--accent);color:#fff;
+  }
+  .langswitch button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
   .scrim{
     position:fixed;inset:0;z-index:39;background:rgba(10,9,7,.55);
     opacity:0;pointer-events:none;transition:opacity .22s var(--ease);
@@ -528,6 +548,12 @@
   .qtext small{
     display:block;font-family:var(--font-body);font-size:13px;color:var(--muted);
     font-weight:400;margin-top:14px;line-height:1.6;letter-spacing:0;
+  }
+  /* shown when a card has no English version yet */
+  .qtext small.en-missing{
+    margin-top:14px;padding:8px 11px;border-radius:8px;
+    background:var(--bg-soft);border:1px solid var(--line);color:var(--muted);
+    font-size:12.5px;
   }
   .qtext b{font-weight:700}
   .atext{
@@ -1232,55 +1258,59 @@
       </div>
       <div>
         <h1>DVA-C03 Flashcard</h1>
-        <p>16 section · ôn thi Developer Associate</p>
+        <p data-i18n="brand.tag">16 section · ôn thi Developer Associate</p>
       </div>
-      <button class="side-close" id="sideClose" title="Đóng menu (Esc)" aria-label="Đóng menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
+      <button class="side-close" id="sideClose" data-i18n-title="side.close" title="Đóng menu (Esc)" data-i18n-aria="side.closeLabel" aria-label="Đóng menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
     </div>
 
     <div class="overall">
-      <div class="row"><span>Tiến độ tổng</span><span id="overallTxt">0%</span></div>
+      <div class="row"><span data-i18n="overall">Tiến độ tổng</span><span id="overallTxt">0%</span></div>
       <div class="bar"><i id="overallBar"></i></div>
     </div>
 
     <div class="stats-mini">
-      <div class="mini"><b id="statDue">0</b><span>Đến hạn</span></div>
-      <div class="mini"><b id="statLearned">0</b><span>Đã thuộc</span></div>
-      <div class="mini"><b id="statStreak">0</b><span>Chuỗi ngày</span></div>
+      <div class="mini"><b id="statDue">0</b><span data-i18n="stat.due">Đến hạn</span></div>
+      <div class="mini"><b id="statLearned">0</b><span data-i18n="stat.learned">Đã thuộc</span></div>
+      <div class="mini"><b id="statStreak">0</b><span data-i18n="stat.streak">Chuỗi ngày</span></div>
     </div>
 
-    <div class="domstats" id="domStats" aria-label="Phân bổ theo domain DVA-C03"></div>
+    <div class="domstats" id="domStats" data-i18n-aria="dom.aria" aria-label="Phân bổ theo domain DVA-C03"></div>
 
-    <div class="filters" id="filters" role="group" aria-label="Lọc thẻ">
-      <button class="chip on" data-filter="all" aria-pressed="true">Tất cả</button>
-      <button class="chip" data-filter="due" aria-pressed="false">Đến hạn</button>
-      <button class="chip" data-filter="new" aria-pressed="false">Chưa học</button>
-      <button class="chip" data-filter="star" aria-pressed="false">Đã ghim</button>
-      <button class="chip" data-filter="hard" aria-pressed="false">Hay sai</button>
+    <div class="filters" id="filters" role="group" data-i18n-aria="filters.aria" aria-label="Lọc thẻ">
+      <button class="chip on" data-filter="all" data-i18n="filter.all" aria-pressed="true">Tất cả</button>
+      <button class="chip" data-filter="due" data-i18n="filter.due" aria-pressed="false">Đến hạn</button>
+      <button class="chip" data-filter="new" data-i18n="filter.new" aria-pressed="false">Chưa học</button>
+      <button class="chip" data-filter="star" data-i18n="filter.star" aria-pressed="false">Đã ghim</button>
+      <button class="chip" data-filter="hard" data-i18n="filter.hard" aria-pressed="false">Hay sai</button>
     </div>
 
-    <nav class="deck-list" id="decks" aria-label="Danh sách chuyên đề"></nav>
+    <nav class="deck-list" id="decks" data-i18n-aria="decks.aria" aria-label="Danh sách chuyên đề"></nav>
 
     <div class="side-foot">
-      <button class="ghost" id="themeBtn" aria-label="Chuyển giao diện"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="3.6"/></svg><span id="themeLabel">Sáng</span></button>
-      <button class="ghost" id="shuffleBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4h4v4M20 4l-5.5 5.5M8 20H4v-4M4 20l5.5-5.5M20 20l-3.2-3.2M4 4l3.2 3.2"/><path d="M14.5 9.5 20 4M9.5 14.5 4 20"/></svg><span>Xáo trộn</span></button>
-      <button class="ghost" id="resetBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4.5V10H9"/></svg><span>Đặt lại</span></button>
+      <button class="ghost" id="themeBtn" data-i18n-aria="theme.aria" aria-label="Chuyển giao diện"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="3.6"/></svg><span id="themeLabel">Sáng</span></button>
+      <button class="ghost" id="shuffleBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4h4v4M20 4l-5.5 5.5M8 20H4v-4M4 20l5.5-5.5M20 20l-3.2-3.2M4 4l3.2 3.2"/><path d="M14.5 9.5 20 4M9.5 14.5 4 20"/></svg><span data-i18n="shuffle.label">Xáo trộn</span></button>
+      <button class="ghost" id="resetBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4.5V10H9"/></svg><span data-i18n="reset.label">Đặt lại</span></button>
     </div>
   </aside>
 
   <main>
     <div class="topbar">
       <button class="menu" id="menuBtn" aria-label="Mở menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      <div class="modes" role="tablist" aria-label="Chế độ ôn tập">
-        <button class="mode on" data-mode="study" role="tab" aria-selected="true">Học</button>
-        <button class="mode" data-mode="quiz" role="tab" aria-selected="false">Trắc nghiệm</button>
-        <button class="mode" data-mode="exam" role="tab" aria-selected="false">Thi thử</button>
-        <button class="mode" data-mode="list" role="tab" aria-selected="false">Danh sách</button>
+      <div class="modes" role="tablist" data-i18n-aria="mode.aria" aria-label="Chế độ ôn tập">
+        <button class="mode on" data-mode="study" role="tab" data-i18n="mode.study" aria-selected="true">Học</button>
+        <button class="mode" data-mode="quiz" role="tab" data-i18n="mode.quiz" aria-selected="false">Trắc nghiệm</button>
+        <button class="mode" data-mode="exam" role="tab" data-i18n="mode.exam" aria-selected="false">Thi thử</button>
+        <button class="mode" data-mode="list" role="tab" data-i18n="mode.list" aria-selected="false">Danh sách</button>
       </div>
       <label class="search">
         <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4.5 4.5"/></svg>
-        <input id="search" type="search" aria-label="Tìm kiếm thẻ" placeholder="Tìm câu hỏi, đáp án, ghi chú…  ( / )" />
+        <input id="search" type="search" data-i18n-aria="search.aria" data-i18n-ph="search.ph" aria-label="Tìm kiếm thẻ" placeholder="Tìm câu hỏi, đáp án, ghi chú…  ( / )" />
       </label>
-      <button class="icon-btn" id="starBtnTop" title="Ghim thẻ hiện tại (S)" aria-label="Ghim thẻ"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.7 5.5 6 .9-4.35 4.25 1.03 6-5.38-2.83-5.38 2.83 1.03-6L3.3 10l6-.9z"/></svg></button>
+      <div class="langswitch" role="group" data-i18n-aria="lang.switch" aria-label="Ngôn ngữ / Language" id="langSwitch">
+        <button type="button" data-lang="vi" aria-pressed="true" title="Tiếng Việt">VI</button>
+        <button type="button" data-lang="en" aria-pressed="false" title="English">EN</button>
+      </div>
+      <button class="icon-btn" id="starBtnTop" data-i18n-title="star.pin" data-i18n-aria="star.label" title="Ghim thẻ hiện tại (S)" aria-label="Ghim thẻ"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.7 5.5 6 .9-4.35 4.25 1.03 6-5.38-2.83-5.38 2.83 1.03-6L3.3 10l6-.9z"/></svg></button>
     </div>
 
     <div class="views" id="views" role="tabpanel" aria-live="polite">
@@ -1298,8 +1328,8 @@
           <div class="card" id="card">
             <div class="face front">
               <div class="face-top" id="frontTags"></div>
-              <div class="qtext" id="frontQ">Đang tải…</div>
-              <div class="flip-hint">Nhấn <span class="kbd">Space</span> hoặc click để lật</div>
+              <div class="qtext" id="frontQ" data-i18n="card.loading">Đang tải…</div>
+              <div class="flip-hint" data-i18n-html="card.flipHint">Nhấn <span class="kbd">Space</span> hoặc click để lật</div>
             </div>
             <div class="face back">
               <div class="face-top" id="backTags"></div>
@@ -1310,17 +1340,17 @@
         </div>
 
         <div class="controls">
-          <button class="ctl icon" id="prevBtn" title="Thẻ trước (←)" aria-label="Thẻ trước"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button>
-          <button class="ctl primary" id="flipBtn">Lật thẻ <span class="kbd">Space</span></button>
-          <button class="ctl icon" id="nextBtn" title="Thẻ sau (→)" aria-label="Thẻ sau"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
-          <button class="ctl icon" id="starBtn" title="Ghim thẻ (S)" aria-label="Ghim thẻ"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.7 5.5 6 .9-4.35 4.25 1.03 6-5.38-2.83-5.38 2.83 1.03-6L3.3 10l6-.9z"/></svg></button>
+          <button class="ctl icon" id="prevBtn" data-i18n-title="card.prev" data-i18n-aria="card.prevLabel" title="Thẻ trước (←)" aria-label="Thẻ trước"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button>
+          <button class="ctl primary" id="flipBtn"><span data-i18n="card.flip">Lật thẻ</span> <span class="kbd">Space</span></button>
+          <button class="ctl icon" id="nextBtn" data-i18n-title="card.next" data-i18n-aria="card.nextLabel" title="Thẻ sau (→)" aria-label="Thẻ sau"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
+          <button class="ctl icon" id="starBtn" data-i18n-title="star.pin" data-i18n-aria="star.label" title="Ghim thẻ (S)" aria-label="Ghim thẻ"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.7 5.5 6 .9-4.35 4.25 1.03 6-5.38-2.83-5.38 2.83 1.03-6L3.3 10l6-.9z"/></svg></button>
         </div>
 
         <div class="rating">
-          <button class="rate again" data-rate="0">Lại <span>1 · quên</span></button>
-          <button class="rate hard" data-rate="1">Khó <span>2 · mơ hồ</span></button>
-          <button class="rate good" data-rate="2">Tốt <span>3 · nhớ</span></button>
-          <button class="rate easy" data-rate="3">Dễ <span>4 · thuộc</span></button>
+          <button class="rate again" data-rate="0"><b data-i18n="rate.0">Lại</b> <span><span data-i18n="rate.0sub">1 · quên</span></span></button>
+          <button class="rate hard" data-rate="1"><b data-i18n="rate.1">Khó</b> <span><span data-i18n="rate.1sub">2 · mơ hồ</span></span></button>
+          <button class="rate good" data-rate="2"><b data-i18n="rate.2">Tốt</b> <span><span data-i18n="rate.2sub">3 · nhớ</span></span></button>
+          <button class="rate easy" data-rate="3"><b data-i18n="rate.3">Dễ</b> <span><span data-i18n="rate.3sub">4 · thuộc</span></span></button>
         </div>
       </section>
 
@@ -1328,9 +1358,9 @@
       <section class="view" id="view-quiz">
         <div class="quizwrap">
           <div class="studytop">
-            <div class="pill" id="quizPillSection">Trắc nghiệm</div>
+            <div class="pill" id="quizPillSection" data-i18n="quiz.pill">Trắc nghiệm</div>
             <div class="spacer"></div>
-            <div class="pill" id="quizScore">0 / 0 đúng</div>
+            <div class="pill" id="quizScore" data-i18n-skip>0 / 0 đúng</div>
           </div>
           <div class="quizbox" id="quizBox">
             <div class="qmeta" id="quizMeta"></div>
@@ -1338,11 +1368,11 @@
             <div class="opts" id="quizOpts"></div>
             <div class="explain" id="quizExplain"></div>
             <div class="quizfoot">
-              <button class="ctl primary" id="quizCheck" disabled>Kiểm tra đáp án</button>
-              <button class="ctl" id="quizNext">Câu tiếp<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
-              <button class="ctl" id="quizSkip">Bỏ qua</button>
+              <button class="ctl primary" id="quizCheck" data-i18n="quiz.check" disabled>Kiểm tra đáp án</button>
+              <button class="ctl" id="quizNext"><span data-i18n="quiz.next">Câu tiếp</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
+              <button class="ctl" id="quizSkip" data-i18n="quiz.skip">Bỏ qua</button>
               <div class="spacer"></div>
-              <div class="score" id="quizFootNote">Chọn đáp án đúng (phím 1–4)</div>
+              <div class="score" id="quizFootNote" data-i18n="quiz.pickIdle">Chọn đáp án đúng (phím 1–4)</div>
             </div>
           </div>
         </div>
@@ -1353,12 +1383,12 @@
         <!-- Exam picker -->
         <div id="examPicker">
           <div class="listhead">
-            <h2>Thi thử DVA-C03</h2>
-            <div class="pill" id="examTotalPill">6 đề · 390 câu</div>
+            <h2 data-i18n="exam.title">Thi thử DVA-C03</h2>
+            <div class="pill" id="examTotalPill" data-i18n-skip>6 đề · 390 câu</div>
             <div class="spacer"></div>
-            <button class="ghost" id="examHistoryBtn">Lịch sử</button>
+            <button class="ghost" id="examHistoryBtn" data-i18n="exam.history">Lịch sử</button>
           </div>
-          <p class="exhint">
+          <p class="exhint" data-i18n="exam.hint">
             65 câu / 150 phút · điểm đạt 72% · đáp án + giải thích tiếng Việt sau khi nộp bài.
           </p>
           <div id="examResume" hidden></div>
@@ -1369,7 +1399,7 @@
         <div id="examRunner" class="examrunner" hidden>
           <div class="exambar">
             <div class="exambar-left">
-              <button class="ghost" id="examExit">Thoát</button>
+              <button class="ghost" id="examExit" data-i18n="exam.exit">Thoát</button>
               <span class="exname" id="examRunName">Practice Test 1</span>
             </div>
             <div class="exambar-mid">
@@ -1378,7 +1408,7 @@
             </div>
             <div class="exambar-right">
               <div class="timer" id="examTimer">150:00</div>
-              <button class="ctl primary sm" id="examSubmit">Nộp bài</button>
+              <button class="ctl primary sm" id="examSubmit" data-i18n="exam.submit">Nộp bài</button>
             </div>
           </div>
 
@@ -1386,32 +1416,32 @@
             <div class="examq">
               <div class="exqhead">
                 <span class="pill" id="examQNum">Câu 1 / 65</span>
-                <span class="pill multi" id="examQType" hidden>Chọn nhiều đáp án</span>
+                <span class="pill multi" id="examQType" data-i18n="exam.multi" hidden>Chọn nhiều đáp án</span>
                 <div class="spacer"></div>
-                <button class="icon-btn" id="examFlagBtn" title="Đánh dấu xem lại (F)" aria-label="Đánh dấu câu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4.5c3.5-2 7 2 11 0V13c-4 2-7.5-2-11 0"/></svg></button>
+                <button class="icon-btn" id="examFlagBtn" data-i18n-title="exam.flag" data-i18n-aria="exam.flagLabel" title="Đánh dấu xem lại (F)" aria-label="Đánh dấu câu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4.5c3.5-2 7 2 11 0V13c-4 2-7.5-2-11 0"/></svg></button>
               </div>
               <div class="exqtext" id="examQText"></div>
               <div class="exopts" id="examOpts"></div>
               <div class="exnav">
-                <button class="ctl" id="examPrev"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>Câu trước</button>
+                <button class="ctl" id="examPrev"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg><span data-i18n="exam.prev">Câu trước</span></button>
                 <div class="spacer"></div>
-                <button class="ctl" id="examClear">Xoá chọn</button>
-                <button class="ctl primary" id="examNext">Câu tiếp<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
+                <button class="ctl" id="examClear" data-i18n="exam.clear">Xoá chọn</button>
+                <button class="ctl primary" id="examNext"><span data-i18n="exam.next">Câu tiếp</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>
               </div>
             </div>
 
             <aside class="examsheet">
               <div class="sheetbody">
                 <button class="sheetToggle" id="sheetToggle" aria-expanded="false">
-                  <span>Bảng câu hỏi</span><b id="sheetSummary">0/65</b>
+                  <span data-i18n="exam.sheet">Bảng câu hỏi</span><b id="sheetSummary">0/65</b>
                 </button>
                 <div class="sheetlegend">
-                  <span><i class="dot answered"></i>Đã làm</span>
-                  <span><i class="dot flagged"></i>Đánh dấu</span>
-                  <span><i class="dot"></i>Chưa làm</span>
+                  <span><i class="dot answered"></i><span data-i18n="exam.legend.done">Đã làm</span></span>
+                  <span><i class="dot flagged"></i><span data-i18n="exam.legend.flag">Đánh dấu</span></span>
+                  <span><i class="dot"></i><span data-i18n="exam.legend.todo">Chưa làm</span></span>
                 </div>
                 <div class="sheetgrid" id="examSheet"></div>
-                <button class="ctl primary wide" id="examSubmit2">Nộp bài</button>
+                <button class="ctl primary wide" id="examSubmit2" data-i18n="exam.submit">Nộp bài</button>
               </div>
             </aside>
           </div>
@@ -1421,7 +1451,7 @@
         <div id="examResult" class="examresult" hidden>
           <div class="reshead">
             <div>
-              <h2 id="resTitle">Kết quả</h2>
+              <h2 id="resTitle" data-i18n="exam.result">Kết quả</h2>
               <p class="resmeta" id="resMeta"></p>
             </div>
             <div class="scorebig" id="resScore">0%</div>
@@ -1429,9 +1459,9 @@
           <div class="resgrid" id="resStats"></div>
 
           <div class="resactions">
-            <button class="ctl primary" id="resReview">Xem lại từng câu</button>
-            <button class="ctl" id="resRedo">Làm lại đề này</button>
-            <button class="ctl" id="resBack">Về danh sách đề</button>
+            <button class="ctl primary" id="resReview" data-i18n="exam.review">Xem lại từng câu</button>
+            <button class="ctl" id="resRedo" data-i18n="exam.redo">Làm lại đề này</button>
+            <button class="ctl" id="resBack" data-i18n="exam.toList">Về danh sách đề</button>
           </div>
 
           <div id="resReviewBody" class="resreview" hidden></div>
@@ -1440,8 +1470,8 @@
         <!-- Exam history -->
         <div id="examHistory" class="examresult" hidden>
           <div class="reshead">
-            <h2>Lịch sử thi thử</h2>
-            <button class="ghost" id="histBack">Quay lại</button>
+            <h2 data-i18n="exam.historyTitle">Lịch sử thi thử</h2>
+            <button class="ghost" id="histBack" data-i18n="exam.back">Quay lại</button>
           </div>
           <div id="histBody"></div>
         </div>
@@ -1450,11 +1480,11 @@
       <!-- LIST -->
       <section class="view" id="view-list">
         <div class="listhead">
-          <h2 id="listTitle">Toàn bộ thẻ</h2>
+          <h2 id="listTitle" data-i18n="list.all">Toàn bộ thẻ</h2>
           <div class="pill" id="listCount">0 thẻ</div>
           <div class="spacer"></div>
-          <button class="ghost" id="expandAll">Mở tất cả</button>
-          <button class="ghost" id="collapseAll">Đóng tất cả</button>
+          <button class="ghost" id="expandAll" data-i18n="list.expand">Mở tất cả</button>
+          <button class="ghost" id="collapseAll" data-i18n="list.collapse">Đóng tất cả</button>
         </div>
         <div id="listBody"></div>
       </section>
@@ -1482,6 +1512,26 @@
 <script src="data/s16.js"></script>
 <script src="data/s17.js"></script>
 <script src="data/s18.js"></script>
+<script src="data/en/s01.js"></script>
+<script src="data/en/s02.js"></script>
+<script src="data/en/s03.js"></script>
+<script src="data/en/s04.js"></script>
+<script src="data/en/s05.js"></script>
+<script src="data/en/s06.js"></script>
+<script src="data/en/s07.js"></script>
+<script src="data/en/s08.js"></script>
+<script src="data/en/s09.js"></script>
+<script src="data/en/s10.js"></script>
+<script src="data/en/s11.js"></script>
+<script src="data/en/s12.js"></script>
+<script src="data/en/s13.js"></script>
+<script src="data/en/s14.js"></script>
+<script src="data/en/s15.js"></script>
+<script src="data/en/s16.js"></script>
+<script src="data/en/s17.js"></script>
+<script src="data/en/s18.js"></script>
+<script src="data/en/manual.js"></script>
+<script src="data/i18n.js"></script>
 <script src="data/exams/e01.js"></script>
 <script src="data/exams/e02.js"></script>
 <script src="data/exams/e03.js"></script>
@@ -1570,7 +1620,124 @@ let ui = {
   flipped: false,
   quiz: null,
   quizScore: { right: 0, total: 0 },
+  lang: "vi",         // interface + card language
 };
+
+/* ---------- interface language ---------- */
+/* Two independent things are being switched here, and they are deliberately
+   separate: the CHROME (labels, buttons, toasts) and the CARD CONTENT. Quiz and
+   exam questions keep their own text in either mode — they were authored in
+   English with Vietnamese explanations, and re-translating them would change
+   what the user is being tested on. */
+const LANG_KEY = "dva-lang-v1";
+const I18N = window.DVA_I18N || { vi: {}, en: {} };
+
+function t(key, vars) {
+  const table = I18N[ui.lang] || I18N.vi || {};
+  let str = table[key];
+  if (str == null) str = (I18N.vi && I18N.vi[key] != null) ? I18N.vi[key] : key;
+  if (vars) {
+    Object.keys(vars).forEach((k) => {
+      str = str.split("{" + k + "}").join(vars[k]);
+    });
+  }
+  return str;
+}
+
+/** Apply the dictionary to the static markup. Runs on load and on every switch,
+    so the DOM is always derived from the dictionary rather than hand-edited. */
+function applyStaticI18n() {
+  document.documentElement.lang = ui.lang;
+  document.title = t("doc.title");
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.getAttribute("data-i18n"));
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    el.innerHTML = t(el.getAttribute("data-i18n-html"));
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+    el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph")));
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+    el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria")));
+  });
+  document.querySelectorAll("[data-i18n-content]").forEach((el) => {
+    el.setAttribute("content", t(el.getAttribute("data-i18n-content")));
+  });
+
+  const sw = document.getElementById("langSwitch");
+  if (sw) {
+    sw.querySelectorAll("button").forEach((b) => {
+      const on = b.dataset.lang === ui.lang;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+  syncThemeLabel();
+}
+
+function setLang(lang, opts) {
+  if (lang !== "vi" && lang !== "en") return;
+  ui.lang = lang;
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  applyStaticI18n();
+  renderAll();
+  if (!opts || !opts.quiet) toast(t(lang === "en" ? "lang.toast.en" : "lang.toast.vi"));
+}
+
+function loadLang() {
+  let saved = null;
+  try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
+  if (saved === "en" || saved === "vi") return saved;
+  // first visit: follow the browser, default to Vietnamese when unsure
+  const nav = (navigator.language || "").toLowerCase();
+  return nav.startsWith("en") ? "en" : "vi";
+}
+
+/* ---------- card content language ---------- */
+/* The Vietnamese cards are the source of truth. data/en/*.js holds the English
+   slide text each card was written from, keyed by section then card order;
+   data/en/manual.js fills in the DVA-C03 sections the course PDF does not cover. */
+const EN = (() => {
+  const base = window.DVA_EN || {};
+  const manual = window.DVA_EN_MANUAL || {};
+  const merged = {};
+  Object.keys(base).forEach((sid) => {
+    merged[sid] = base[sid].map((row, i) => {
+      const m = manual[sid] && manual[sid][i];
+      if (!m) return row;
+      // keep the extracted text when it exists, but fill the gaps
+      return { ...row, eq: row.eq || m.eq, en: row.en || m.en };
+    });
+  });
+  Object.keys(manual).forEach((sid) => {
+    if (!merged[sid]) merged[sid] = manual[sid];
+  });
+  return merged;
+})();
+
+function enCardFor(item) {
+  const list = EN[item.sid];
+  if (!list) return null;
+  const hit = list[item.idx];
+  return hit && hit.en ? hit : null;
+}
+
+/** What the front and back of the current card should say, in the chosen
+    language. Falls back to Vietnamese with a note when no English exists. */
+function cardText(item) {
+  const c = item.card;
+  if (ui.lang !== "en") return { q: c.q, a: c.a, note: c.note, tip: c.tip, fallback: false };
+  const en = enCardFor(item);
+  if (!en) return { q: c.q, a: c.a, note: c.note, tip: c.tip, fallback: true };
+  // eq is the slide's own English heading; q stays as a fallback for entries
+  // written before the heading was extracted
+  return { q: en.eq || en.q || c.q, a: en.en, note: c.note, tip: c.tip, fallback: false };
+}
 
 /* ---------- storage ---------- */
 function loadStore() {
@@ -1709,7 +1876,7 @@ function updateStats() {
   document.getElementById("statLearned").textContent = learned + "/" + all.length;
   document.getElementById("statStreak").textContent = store.stats.streak || 0;
   const st = store.stats;
-  document.getElementById("pillStats").textContent = st.right + " đúng · " + st.wrong + " sai";
+  document.getElementById("pillStats").textContent = t("pill.stats", { right: st.right, wrong: st.wrong });
   renderDomainStats(all);
 }
 
@@ -1750,7 +1917,7 @@ function renderDecks() {
   const total = allCards().length;
   let html = `<button class="deck ${ui.sectionId === "all" ? "on" : ""}" data-sid="all">
       <span class="num">∞</span>
-      <span><span class="t">Tất cả section</span><span class="s">${SECTIONS.length} chủ đề</span></span>
+      <span><span class="t">${escapeHtml(t("decks.all"))}</span><span class="s">${escapeHtml(t("decks.topics", { n: SECTIONS.length }))}</span></span>
       <span class="pct">${total}</span>
     </button>`;
   SECTIONS.forEach(sec => {
@@ -1760,7 +1927,7 @@ function renderDecks() {
       <span class="num">${sec.num}</span>
       <span>
         <span class="t">${escapeHtml(sec.title)}${due ? '<span class="dot"></span>' : ""}</span>
-        <span class="s">${p.learned}/${p.total} đã thuộc<em class="dchip">${DOMAIN_LABEL[sectionDomain(sec)].short}</em></span>
+        <span class="s">${escapeHtml(t("decks.learned", { learned: p.learned, total: p.total }))}<em class="dchip">${DOMAIN_LABEL[sectionDomain(sec)].short}</em></span>
       </span>
       <span class="pct">${due ? due + "↻" : Math.round(100 * p.learned / p.total) + "%"}</span>
     </button>`;
@@ -1795,11 +1962,13 @@ function syncThemeLabel() {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
   const label = $("themeLabel");
   const btn = $("themeBtn");
-  if (label) label.textContent = isDark ? "Tối" : "Sáng";
+  if (label) label.textContent = isDark
+    ? (ui.lang === "en" ? "Dark" : "Tối")
+    : t("theme.label");
   if (btn) {
     const svg = btn.querySelector("svg");
     if (svg) svg.outerHTML = isDark ? ICON_MOON : ICON_SUN;
-    btn.setAttribute("aria-label", isDark ? "Đang dùng giao diện tối, chuyển sang sáng" : "Đang dùng giao diện sáng, chuyển sang tối");
+    btn.setAttribute("aria-label", isDark ? t("theme.toLight") : t("theme.toDark"));
   }
 }
 
@@ -1815,14 +1984,14 @@ function renderStudy() {
   if (!ui.queue.length) {
     $("frontQ").innerHTML = "";
     $("frontQ").textContent = "";
-    $("frontQ").innerHTML = `<b>Không có thẻ nào</b><small>Hãy đổi bộ lọc, chọn section khác, hoặc xoá từ khoá tìm kiếm.</small>`;
+    $("frontQ").innerHTML = `<b>${escapeHtml(t("card.emptyB"))}</b><small>${escapeHtml(t("card.emptySmall"))}</small>`;
     $("frontTags").innerHTML = "";
     $("backTags").innerHTML = "";
     $("backA").textContent = "";
     $("backNote").style.display = "none";
     $("card").classList.remove("flipped");
     $("pillPos").textContent = "0 / 0";
-    $("pillDue").textContent = "0 đến hạn";
+    $("pillDue").textContent = t("pill.due", { n: 0 });
     $("pillSection").textContent = "—";
     setStarIcon($("starBtn"), false);
     return;
@@ -1834,26 +2003,35 @@ function renderStudy() {
 
   $("pillSection").textContent = "Section " + sec.num + " · " + (c.chapter || sec.chapters[0] || sec.title);
   const dueInSec = sec.cards.reduce((n, _, i) => n + (isDue(sec.id, i) ? 1 : 0), 0);
-  $("pillDue").textContent = dueInSec + " đến hạn";
+  $("pillDue").textContent = t("pill.due", { n: dueInSec });
   $("pillPos").textContent = (ui.pos + 1) + " / " + ui.queue.length;
 
+  // the card body follows the chosen language; the meta tags stay tied to the
+  // Vietnamese source so the section and chapter always mean the same thing
+  const text = cardText(item);
+
   const tags = `<span class="tag">S${sec.num}</span>` + (c.chapter ? `<span class="tag">${escapeHtml(c.chapter)}</span>` : "");
-  const starTag = `<span class="tag star">${ICON_STAR_FILL}Đã ghim</span>`;
+  const starTag = `<span class="tag star">${ICON_STAR_FILL}${escapeHtml(t("tag.pinned"))}</span>`;
   $("frontTags").innerHTML = tags + (st.star ? starTag : "");
-  $("backTags").innerHTML = tags + (c.tip ? '<span class="tag tip">Exam tip</span>' : "") + (st.star ? starTag : "");
+  $("backTags").innerHTML = tags + (c.tip ? `<span class="tag tip">${escapeHtml(t("tag.tip"))}</span>` : "") + (st.star ? starTag : "");
 
-  $("frontQ").innerHTML = fmtInlineRich(c.q) +
-    (c.sub ? `<small>${escapeHtml(c.sub)}</small>` : "");
+  $("frontQ").innerHTML = fmtInlineRich(text.q) +
+    (c.sub ? `<small>${escapeHtml(c.sub)}</small>` : "") +
+    (text.fallback ? `<small class="en-missing">${escapeHtml(t("lang.cardFallback"))}</small>` : "");
 
-  $("backA").innerHTML = fmtRich(c.a);
+  $("backA").innerHTML = fmtRich(text.a);
 
   const noteEl = $("backNote");
   const noteParts = [];
-  if (c.note) noteParts.push(c.note);
-  if (c.tip) noteParts.push("**Exam tip:** " + c.tip);
+  // the note and tip are Vietnamese prose; showing them under an English body
+  // would mix languages mid-card, and the slide text already covers the point
+  if (ui.lang !== "en") {
+    if (text.note) noteParts.push(text.note);
+    if (text.tip) noteParts.push(t("note.tip") + " " + text.tip);
+  }
   if (noteParts.length) {
     noteEl.style.display = "block";
-    noteEl.innerHTML = noteParts.map(t => escapeHtml(t).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")).join("<br><br>");
+    noteEl.innerHTML = noteParts.map(x => escapeHtml(x).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")).join("<br><br>");
   } else {
     noteEl.style.display = "none";
   }
@@ -1917,15 +2095,15 @@ function rateCard(quality) { // 0..3
   ui.flipped = false;
   updateStats(); renderDecks(); renderStudy();
   saveUi();
-  toast(ratingLabel(quality) + " · lần sau: " + humanInterval(cardState(item.sid, item.idx).due));
+  toast(ratingLabel(quality) + " · " + t("due.next") + ": " + humanInterval(cardState(item.sid, item.idx).due));
 }
-function ratingLabel(q){ return ["Lại","Khó","Tốt","Dễ"][q]; }
+function ratingLabel(q){ return t("rate." + q); }
 function humanInterval(ts) {
   const d = ts - Date.now();
-  if (d <= 0) return "bây giờ";
-  if (d < 3600000) return Math.round(d / 60000) + " phút";
-  if (d < DAY) return Math.round(d / 3600000) + " giờ";
-  return Math.round(d / DAY) + " ngày";
+  if (d <= 0) return t("due.now");
+  if (d < 3600000) return t("due.minutes", { n: Math.round(d / 60000) });
+  if (d < DAY) return t("due.hours", { n: Math.round(d / 3600000) });
+  return t("due.days", { n: Math.round(d / DAY) });
 }
 function tickStreak() {
   const d = new Date(); d.setHours(0,0,0,0);
@@ -1943,7 +2121,7 @@ function toggleStar() {
   const st = cardState(item.sid, item.idx);
   st.star = !st.star;
   save(); renderStudy(); renderDecks();
-  toast(st.star ? "Đã ghim thẻ" : "Đã bỏ ghim");
+  toast(t(st.star ? "toast.pinOn" : "toast.pinOff"));
 }
 
 const letter = (i) => String.fromCharCode(65 + i);
@@ -1986,10 +2164,10 @@ function newQuiz() {
   }
   if (!pool.length) {
     ui.quiz = null;
-    $("quizQ").innerHTML = "Không có câu nào khớp từ khoá.";
+    $("quizQ").innerHTML = escapeHtml(t("quiz.empty"));
     $("quizOpts").innerHTML = "";
     $("quizMeta").innerHTML = "";
-    $("quizPillSection").textContent = "Trắc nghiệm";
+    $("quizPillSection").textContent = t("quiz.pill");
     $("quizFootNote").textContent = "";
     return;
   }
@@ -2015,13 +2193,13 @@ function renderQuiz(rebuild) {
   if (!q) return;
 
   const dom = DOMAIN_LABEL[quizDomain(q)];
-  $("quizPillSection").textContent = "Trắc nghiệm";
+  $("quizPillSection").textContent = t("quiz.pill");
   $("quizQ").innerHTML = fmtInlineRich(q.q);
   // no blueprint %: the quiz is a practice pool, "enough questions" is the goal
   $("quizMeta").innerHTML =
     `<span class="tag">${dom.short} · ${dom.name}</span>` +
-    (q.multi ? `<span class="tag">chọn ${q.correct.length}</span>` : "") +
-    `<span class="tag soft">${QUIZ_BANK.length} câu</span>`;
+    (q.multi ? `<span class="tag">${escapeHtml(t("quiz.pickN", { n: q.correct.length }))}</span>` : "") +
+    `<span class="tag soft">${escapeHtml(t("quiz.bankCount", { n: QUIZ_BANK.length }))}</span>`;
 
   const opts = $("quizOpts");
   // options are lettered A..E so the on-screen label always matches the answer
@@ -2053,18 +2231,26 @@ function syncQuizPicks() {
   check.hidden = q.answered;
   check.disabled = q.picked.size === 0;
   check.classList.toggle("primary", !q.answered && q.picked.size > 0);
-  check.textContent = "Kiểm tra đáp án";
+  check.textContent = t("quiz.check");
   next.classList.toggle("primary", q.answered);
 
   if (q.answered) return;
   $("quizOpts").querySelectorAll(".opt").forEach((b, j) =>
     b.classList.toggle("sel", q.picked.has(j)));
 
-  const keys = `A–${letter(q.options.length - 1)} hoặc 1–${q.options.length}`;
-  const need = q.correct.length > 1 ? `chọn ${q.correct.length} đáp án` : "chọn 1 đáp án";
-  $("quizFootNote").textContent = q.picked.size
-    ? `Đã chọn ${q.picked.size}${q.correct.length > 1 ? " / " + q.correct.length : ""} — bấm Kiểm tra để chấm`
-    : `${need[0].toUpperCase() + need.slice(1)}, rồi bấm Kiểm tra (${keys}, Enter để chấm)`;
+  const keys = ui.lang === "en"
+    ? `A–${letter(q.options.length - 1)} or 1–${q.options.length}`
+    : `A–${letter(q.options.length - 1)} hoặc 1–${q.options.length}`;
+  const multi = q.correct.length > 1;
+  if (q.picked.size) {
+    $("quizFootNote").textContent = multi
+      ? t("quiz.pickedOf", { n: q.picked.size, m: q.correct.length }) + " — " + t("quiz.pickedHint")
+      : t("quiz.picked", { n: q.picked.size }) + " — " + t("quiz.pickedHint");
+  } else {
+    const need = multi ? t("quiz.pickN", { n: q.correct.length }) : t("quiz.pickOne");
+    const sentence = need.charAt(0).toUpperCase() + need.slice(1);
+    $("quizFootNote").textContent = t("quiz.pickHint", { need: sentence, keys });
+  }
 }
 
 function answerQuiz(i) {
@@ -2252,7 +2438,8 @@ function gradeQuiz() {
 }
 function updateQuizScore() {
   const s = ui.quizScore;
-  $("quizScore").textContent = s.right + " / " + s.total + " đúng" + (s.total ? " · " + Math.round(100 * s.right / s.total) + "%" : "");
+  // no percentage: the quiz is a practice pool, so only the tally is meaningful
+  $("quizScore").textContent = t("quiz.score", { right: s.right, total: s.total });
 }
 function nextQuiz() {
   ui.quiz = null;
@@ -2266,10 +2453,10 @@ function renderList() {
   const grouped = {};
   items.forEach(x => { (grouped[x.sid] = grouped[x.sid] || []).push(x); });
   const secs = SECTIONS.filter(s => grouped[s.id]);
-  $("listCount").textContent = items.length + " thẻ";
-  $("listTitle").textContent = ui.sectionId === "all" ? "Toàn bộ thẻ" : SECTIONS.find(s => s.id === ui.sectionId).title;
+  $("listCount").textContent = t("list.count", { n: items.length });
+  $("listTitle").textContent = ui.sectionId === "all" ? t("list.all") : SECTIONS.find(s => s.id === ui.sectionId).title;
   if (!items.length) {
-    body.innerHTML = `<div class="empty"><b>Không có thẻ</b>Thử bộ lọc hoặc từ khoá khác.</div>`;
+    body.innerHTML = `<div class="empty"><b>${escapeHtml(t("list.emptyB"))}</b>${escapeHtml(t("list.emptySmall"))}</div>`;
     return;
   }
   body.innerHTML = secs.map(sec => {
@@ -2278,11 +2465,12 @@ function renderList() {
       <h3>Section ${sec.num} · ${escapeHtml(sec.title)} — ${p.learned}/${p.total}</h3>
       ${grouped[sec.id].map(x => {
         const st = peekState(x.sid, x.idx);
+        const text = cardText(x);
         return `<details class="qa">
-          <summary>${highlight(x.card.q)} ${st.star ? `<span class="star-mark" aria-label="đã ghim">${ICON_STAR_FILL}</span>` : ""}</summary>
-          <div class="ans">${fmtRich(x.card.a)}</div>
-          ${x.card.note ? `<div class="n">${highlight(x.card.note)}</div>` : ""}
-          ${x.card.tip ? `<div class="n tip">${highlight(x.card.tip)}</div>` : ""}
+          <summary>${highlight(text.q)} ${st.star ? `<span class="star-mark" aria-label="${escapeHtml(t("list.pinned"))}">${ICON_STAR_FILL}</span>` : ""}</summary>
+          <div class="ans">${fmtRich(text.a)}</div>
+          ${ui.lang !== "en" && text.note ? `<div class="n">${highlight(text.note)}</div>` : ""}
+          ${ui.lang !== "en" && text.tip ? `<div class="n tip">${highlight(text.tip)}</div>` : ""}
         </details>`;
       }).join("")}
     </div>`;
@@ -2371,7 +2559,7 @@ function renderExamPicker() {
     return;
   }
   const totalQ = EXAM_SETS.reduce((n, s) => n + s.questions.length, 0);
-  $("examTotalPill").textContent = `${EXAM_SETS.length} đề · ${totalQ} câu`;
+  $("examTotalPill").textContent = t("exam.totalPill", { sets: EXAM_SETS.length, n: totalQ });
 
   const live = loadLiveExam();
   const liveBox = $("examResume");
@@ -2410,8 +2598,8 @@ function renderExamPicker() {
     return `<button class="examcard" data-exam="${i}">
       <div class="ecnum">${i + 1}</div>
       <h3>${escapeHtml(s.name)}</h3>
-      <div class="ecmeta"><span>${s.questions.length} câu</span><span>${s.duration} phút</span><span>đạt ${s.pass || 72}%</span></div>
-      <div class="ecbest${cls}">${best == null ? "Chưa làm lần nào" : `Cao nhất: <b>${best}%</b> · ${mine.length} lần`}</div>
+      <div class="ecmeta"><span>${escapeHtml(t("exam.qCount", { n: s.questions.length }))}</span><span>${escapeHtml(t("exam.minutes", { n: s.duration }))}</span><span>${escapeHtml(t("exam.passMark", { n: s.pass || 72 }))}</span></div>
+      <div class="ecbest${cls}">${best == null ? escapeHtml(t("exam.never")) : t("exam.best", { score: best, n: mine.length })}</div>
     </button>`;
   }).join("");
 
@@ -2486,7 +2674,7 @@ function renderExamQ() {
   );
 
   $("examPrev").disabled = exam.pos === 0;
-  $("examNext").innerHTML = (exam.pos === s.questions.length - 1 ? "Câu cuối" : "Câu tiếp") + '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>';
+  $("examNext").innerHTML = escapeHtml(t(exam.pos === s.questions.length - 1 ? "exam.last" : "exam.next")) + '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>';
   $("examNext").disabled = exam.pos === s.questions.length - 1;
 
   const answered = exam.answers.filter((a) => a.size).length;
@@ -2609,7 +2797,7 @@ function renderExamResult() {
   reviewFilter = "all";
   $("resReviewBody").hidden = true;
   $("resReviewBody").innerHTML = "";
-  $("resReview").textContent = "Xem lại từng câu";
+  $("resReview").textContent = t("exam.review");
 }
 
 /* ---------- explanation: turn the crawled prose into something readable ----------
@@ -2850,7 +3038,7 @@ function renderReviewItem(d, q) {
     <div class="rvh">
       <span class="rvnum">Câu ${d.i + 1}</span>
       <span class="rvtag">${tag}</span>
-      ${q.multi ? '<span class="rvtag soft">nhiều đáp án</span>' : ""}
+      ${q.multi ? `<span class="rvtag soft">${escapeHtml(t("exam.multiTag"))}</span>` : ""}
       <span class="rvpick">${pick}</span>
     </div>
     <div class="rvq">${fmtInlineRich(q.q)}</div>
@@ -2892,7 +3080,7 @@ function renderExamReview() {
   const body = $("resReviewBody");
   renderReviewList();
   body.hidden = false;
-  $("resReview").textContent = "Ẩn phần xem lại";
+  $("resReview").textContent = t("exam.hideReview");
   body.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -3021,8 +3209,16 @@ function wire() {
     ui.pos = 0; ui.flipped = false;
     buildQueue(); renderStudy();
     saveUi();
-    toast(ui.shuffled ? "Đã bật xáo trộn" : "Thứ tự gốc");
+    toast(t(ui.shuffled ? "shuffle.on" : "shuffle.off"));
   });
+  const langSwitch = $("langSwitch");
+  if (langSwitch) {
+    langSwitch.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-lang]");
+      if (!btn || btn.dataset.lang === ui.lang) return;
+      setLang(btn.dataset.lang);
+    });
+  }
   $("themeBtn").addEventListener("click", () => {
     const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", cur);
@@ -3035,10 +3231,10 @@ function wire() {
     if (mq.addEventListener) mq.addEventListener("change", onChange);
   }
   $("resetBtn").addEventListener("click", () => {
-    if (!confirm("Xoá toàn bộ tiến độ học (đã thuộc, ghim, streak)? Không thể hoàn tác.")) return;
+    if (!confirm(t("reset.confirm"))) return;
     store = { cards: {}, stats: { right: 0, wrong: 0, reviews: 0, streak: 0, lastDay: "" } };
     save(); ui.pos = 0; ui.flipped = false; ui.quizScore = { right: 0, total: 0 };
-    renderAll(); toast("Đã reset tiến độ");
+    renderAll(); toast(t("reset.done"));
   });
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushUi(); });
   window.addEventListener("pagehide", flushUi);
@@ -3068,7 +3264,7 @@ function wire() {
     if (exam.reviewing) {
       exam.reviewing = false;
       $("resReviewBody").hidden = true;
-      $("resReview").textContent = "Xem lại từng câu";
+      $("resReview").textContent = t("exam.review");
     } else {
       exam.reviewing = true;
       renderExamReview();
@@ -3135,20 +3331,29 @@ function wire() {
 
 function renderAll() {
   renderDecks(); updateStats(); buildQueue(); renderStudy();
+  // every counter is a translated string, so refresh them all on a language
+  // switch even when that view is not the one on screen
+  updateQuizScore();
+  renderExamPicker();
   if (ui.mode === "quiz") renderQuiz(true);
   if (ui.mode === "list") renderList();
 }
 
 /* ---------- boot ---------- */
 (function boot() {
+  ui.lang = loadLang();
   if (!SECTIONS.length) {
-    $("frontQ").innerHTML = "<b>Không tải được dữ liệu</b><small>Kiểm tra thư mục data/ và mở lại trang.</small>";
+    applyStaticI18n();
+    $("frontQ").innerHTML = `<b>${escapeHtml(t("error.load"))}</b><small>${escapeHtml(t("error.loadSmall"))}</small>`;
     return;
   }
-  const t = localStorage.getItem("dva-theme");
-  if (t) document.documentElement.setAttribute("data-theme", t);
+  const chosenTheme = localStorage.getItem("dva-theme");
+  if (chosenTheme) document.documentElement.setAttribute("data-theme", chosenTheme);
   else applySystemTheme();
-  syncThemeLabel();
+
+  // language first: the first paint must already be in the right language, and
+  // renderAll() below builds strings through t()
+  applyStaticI18n();
 
   const resumed = restoreUi();
 
@@ -3171,9 +3376,9 @@ function renderAll() {
   }
 
   if (!store.stats.lastDay) {
-    toast("Chào bạn! Bấm Space để lật thẻ, 1–4 để tự đánh giá mức nhớ.");
+    toast(t("toast.welcome"));
   } else if (resumed) {
-    toast("Đã khôi phục phiên học trước của bạn.");
+    toast(t("toast.restored"));
   }
 })();
 </script>

@@ -1,6 +1,8 @@
 # AWS DVA-C03 · Flashcard & Thi thử
 
-Ứng dụng HTML tĩnh: **564 flashcard (18 section)** + **6 đề thi thử** (390 câu) crawl từ Cloud Exam Pro.
+Ứng dụng HTML tĩnh: **564 flashcard (18 section)** + **190 câu trắc nghiệm** + **6 đề thi thử** (390 câu) crawl từ Cloud Exam Pro.
+
+Giao diện và flashcard **chuyển đổi Anh / Việt** bằng nút VI–EN trên thanh công cụ; trắc nghiệm và thi thử giữ nguyên.
 
 Lộ trình học bám theo **DVA-C03** (hiệu lực từ 01/12/2026), nhưng vẫn dùng được để thi **DVA-C02** vì nền tảng dịch vụ gần như trùng nhau.
 
@@ -23,11 +25,35 @@ Mở trực tiếp bằng `file://` vẫn chạy, nhưng nên dùng server để
 index.html            giao diện + toàn bộ logic (Học / Trắc nghiệm / Thi thử / Danh sách)
 vercel.json           cấu hình deploy (cache + clean URLs)
 assets/*.woff2        font tự host (Bricolage, Be Vietnam Pro, JetBrains Mono) — chạy offline được
-data/s01.js … s18.js  564 flashcard theo 18 section
+data/s01.js … s18.js  564 flashcard theo 18 section (bản gốc tiếng Việt)
+data/en/s01.js … s18.js     mặt tiếng Anh của từng thẻ, trích từ slide PDF gốc
+data/en/manual.js          bản tiếng Anh viết tay cho s17–s18 (PDF DVA-C02 không có)
+data/i18n.js               chuỗi giao diện EN/VI
 data/quiz/bank.js     190 câu trắc nghiệm DVA (đáp án + giải thích + trick)
 data/exams/e01.js … e06.js   6 đề thi thử 65 câu (có đáp án + giải thích tiếng Việt)
+tools/build-en-cards.mjs   dựng data/en/*.js từ PDF (đối chiếu section → chapter → slide)
 tools/crawl-cloudexam.mjs    crawler Cloud Exam Pro
 ```
+
+## Chuyển đổi EN / VI
+
+Nút **VI / EN** nằm trên thanh công cụ, đổi cả **giao diện** và **nội dung flashcard**; lựa chọn lưu ở `dva-lang-v1` nên lần sau mở lại vẫn giữ nguyên.
+
+- **Giao diện**: toàn bộ nhãn, nút, thông báo dịch qua `data/i18n.js`. Lần đầu mở, ngôn ngữ theo trình duyệt (mặc định tiếng Việt).
+- **Flashcard**: mỗi thẻ có câu hỏi + nội dung tiếng Anh. Bản tiếng Anh **không phải dịch máy** — nó lấy từ chính slide PDF mà thẻ được viết ra: tiêu đề slide thành câu hỏi, bullet trên slide thành nội dung. Nhờ vậy thuật ngữ AWS khớp đúng bản gốc.
+- **Trắc nghiệm và thi thử giữ nguyên**: câu hỏi đã là tiếng Anh, giải thích tiếng Việt; chỉ nhãn nút đổi theo ngôn ngữ.
+
+Vì PDF là bản DVA-C02, hai section DVA-C03 (s17 AI, s18 Troubleshooting) không có slide tương ứng — phần tiếng Anh của 38 thẻ đó nằm trong `data/en/manual.js`, viết tay theo đúng nội dung tiếng Việt.
+
+Dựng lại phần tiếng Anh sau khi sửa thẻ:
+
+```bash
+pdftotext -layout "[CMP-DVA] AWS Certified Developer - Associate_v5.pdf" /tmp/dva.txt
+node tools/build-en-cards.mjs --pdf /tmp/dva.txt          # ghi data/en/*.js
+node tools/build-en-cards.mjs --pdf /tmp/dva.txt --report # chỉ xem độ phủ
+```
+
+Script tự kiểm chứng ranh giới section trong PDF (`verifySectionStarts`); nếu PDF đổi và vị trí slide lệch, nó **dừng và báo lỗi** thay vì âm thầm gắn sai nội dung.
 
 ## Lưu phiên trên trình duyệt
 
@@ -38,6 +64,7 @@ tools/crawl-cloudexam.mjs    crawler Cloud Exam Pro
 | `dva-exam-live-v1` | **Bài thi đang làm dở**: đáp án đã chọn, cờ, câu hiện tại, giờ kết thúc |
 | `dva-exam-history-v1` | Lịch sử 40 lần thi gần nhất (điểm, số câu đúng, thời gian) |
 | `dva-theme` | Lựa chọn sáng/tối (không có thì theo hệ thống) |
+| `dva-lang-v1` | Ngôn ngữ giao diện + flashcard (`vi` / `en`) |
 
 - Đóng tab giữa lúc thi vẫn quay lại được: mở lại web sẽ thấy banner **"Bạn đang làm dở … Tiếp tục / Bỏ bài"**, đồng hồ chạy tiếp theo giờ kết thúc đã lưu.
 - Hết giờ trong lúc không mở web thì lượt thi đó bị bỏ (không thể nộp thay).
