@@ -26,12 +26,11 @@ index.html            giao diện + toàn bộ logic (Học / Trắc nghiệm / 
 vercel.json           cấu hình deploy (cache + clean URLs)
 assets/*.woff2        font tự host (Bricolage, Be Vietnam Pro, JetBrains Mono) — chạy offline được
 data/s01.js … s18.js  564 flashcard theo 18 section (bản gốc tiếng Việt)
-data/en/s01.js … s18.js     mặt tiếng Anh của từng thẻ, trích từ slide PDF gốc
-data/en/manual.js          bản tiếng Anh viết tay cho s17–s18 (PDF DVA-C02 không có)
+data/en/cards-s01.js … cards-s16.js   bản dịch EN đầy đủ của s01–s16 (cùng cấu trúc q/a/note/tip)
+data/en/cards-manual.js              bản dịch EN của s17–s18 (PDF DVA-C02 không có hai section này)
 data/i18n.js               chuỗi giao diện EN/VI
 data/quiz/bank.js     190 câu trắc nghiệm DVA (đáp án + giải thích + trick)
 data/exams/e01.js … e06.js   6 đề thi thử 65 câu (có đáp án + giải thích tiếng Việt)
-tools/build-en-cards.mjs   dựng data/en/*.js từ PDF (đối chiếu section → chapter → slide)
 tools/crawl-cloudexam.mjs    crawler Cloud Exam Pro
 ```
 
@@ -40,20 +39,10 @@ tools/crawl-cloudexam.mjs    crawler Cloud Exam Pro
 Nút **VI / EN** nằm trên thanh công cụ, đổi cả **giao diện** và **nội dung flashcard**; lựa chọn lưu ở `dva-lang-v1` nên lần sau mở lại vẫn giữ nguyên.
 
 - **Giao diện**: toàn bộ nhãn, nút, thông báo dịch qua `data/i18n.js`. Lần đầu mở, ngôn ngữ theo trình duyệt (mặc định tiếng Việt).
-- **Flashcard**: mỗi thẻ có câu hỏi + nội dung tiếng Anh. Bản tiếng Anh **không phải dịch máy** — nó lấy từ chính slide PDF mà thẻ được viết ra: tiêu đề slide thành câu hỏi, bullet trên slide thành nội dung. Nhờ vậy thuật ngữ AWS khớp đúng bản gốc.
+- **Flashcard**: mỗi thẻ có bản tiếng Anh **dịch đầy đủ** theo đúng cấu trúc của bản tiếng Việt — cùng câu hỏi, cùng nội dung đáp án, cùng `note` và `tip`. Không phải trích slide: 564/564 thẻ đều là câu hỏi thật, có đáp án viết cho chính câu hỏi đó.
 - **Trắc nghiệm và thi thử giữ nguyên**: câu hỏi đã là tiếng Anh, giải thích tiếng Việt; chỉ nhãn nút đổi theo ngôn ngữ.
 
-Vì PDF là bản DVA-C02, hai section DVA-C03 (s17 AI, s18 Troubleshooting) không có slide tương ứng — phần tiếng Anh của 38 thẻ đó nằm trong `data/en/manual.js`, viết tay theo đúng nội dung tiếng Việt.
-
-Dựng lại phần tiếng Anh sau khi sửa thẻ:
-
-```bash
-pdftotext -layout "[CMP-DVA] AWS Certified Developer - Associate_v5.pdf" /tmp/dva.txt
-node tools/build-en-cards.mjs --pdf /tmp/dva.txt          # ghi data/en/*.js
-node tools/build-en-cards.mjs --pdf /tmp/dva.txt --report # chỉ xem độ phủ
-```
-
-Script tự kiểm chứng ranh giới section trong PDF (`verifySectionStarts`); nếu PDF đổi và vị trí slide lệch, nó **dừng và báo lỗi** thay vì âm thầm gắn sai nội dung.
+Thuật ngữ AWS (IAM role, ALB, DynamoDB GSI, KMS CMK…) giữ nguyên bản gốc trong cả hai ngôn ngữ để khớp với đề thi.
 
 ## Lưu phiên trên trình duyệt
 
